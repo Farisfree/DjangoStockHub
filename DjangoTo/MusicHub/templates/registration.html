@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% load static %}
+<body>
+<div style="text-align: center;">
+    <img src="{% static 'MusicHub/img/PornHubLogo.png' %}" alt="MusicHubLOGO" height="80px">
+    <h2>REGISTRATION</h2>
+    <form action="{% url 'handleRegistration' %}" method="post">
+        {% csrf_token %}
+            <label>
+                Account Number:
+                <input type="text" name="AccountNumber">
+                Password:
+                <input type="text" name="Password">
+            </label>
+            <input type="submit" value="Register">
+            {{ warning }}
+    </form>
+</div>
+</body>
+</html>

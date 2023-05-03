@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% load static %}
+<body>
+<div style="text-align: center;">
+    <div>
+        <img src="{% static 'MusicHub/img/PornHubLogo.png' %}" alt="MusicHubLOGO" height="80px">
+
+    </div>
+
+    <form action="{% url "handleLogin" %}" method="post">
+        {% csrf_token %}
+        <div>
+            <h2>LOGIN</h2>
+            <label>
+                Account Number
+                <input type="text" name="loginAccount">
+                Password
+                <input type="text" name="loginPassword">
+            </label>
+            <input type="submit" value="login">
+            <h1>{{ warnings }}</h1>
+        </div>
+    </form>
+    {{ warning1 }}
+    {{ hint }}
+    <a href="/registration">If you don't have an account yet,pls click here!</a>
+</div>
+</body>
+</html>
+

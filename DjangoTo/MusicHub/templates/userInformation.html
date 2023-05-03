@@ -1,0 +1,59 @@
+{% extends "home.html" %}
+{% block body_block %}
+    <table border="1"  align="center">
+        <tr>
+            <th>UID</th>
+            <th>User Type</th>
+            <th>Delete User</th>
+        </tr>
+        {% for row in  userinformationtable %}
+            <tr>
+                {% for number in row %}
+                    <td>{{ number }}</td>
+                {% endfor %}
+                <td>
+                    <div>
+                    <form action="{% url "deleteUser" %}" method="post">
+                        {% csrf_token %}
+                        <label>
+                            <input type="text" name="删除的用户" value={{ row|first }} readonly="readonly" >
+                            <input type="submit" value="Delete">
+                        </label>
+                    </form>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table >
+    <div>
+        <table border="1"  align="center">
+            <tr>
+                <th><b>ADD USER</b></th>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <form action="{% url "addAnyUser" %}" method="post">
+                            {% csrf_token %}
+                            <b>Account Number</b>
+                            <label>
+                                <input type="text" name="AccountNumber">
+                            </label>
+                            <b>Password</b>
+                            <label>
+                                <input type="text" name="Password">
+                            </label>
+                            <b>User Type:pls input 0 or 1</b>
+                            (Hint:0 stands Normal User,1 stands Administrator)
+                            <label>
+                                <input type="text" name="UserType">
+                            </label>
+                            <input type="submit" value="ADD">
+                        </form>
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}
