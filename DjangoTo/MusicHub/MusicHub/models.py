@@ -17,7 +17,7 @@ class Searchresult(models.Model):
 
 
 class SongData(models.Model):
-    id = models.IntegerField(null=False,primary_key=True)
+    id = models.IntegerField(null=False, primary_key=True)
     title = models.CharField(max_length=250)
     artist = models.CharField(max_length=190)
     album = models.CharField(max_length=190)
@@ -30,7 +30,7 @@ class SongData(models.Model):
 
 
 class UsersTable(models.Model):
-    id = models.CharField(max_length=20,null=False,primary_key=True)
+    id = models.CharField(max_length=20, null=False, primary_key=True)
     password1 = models.CharField(db_column='Password1', max_length=20)  # Field name made lowercase.
     usertype = models.IntegerField(db_column='UserType', blank=True, null=True)  # Field name made lowercase.
 

@@ -5,16 +5,16 @@
     <title>搜索</title>
 </head>
 <body>
-    <form method="post" action="/search/">
-        {% csrf_token %}
-        <input type="text" name = "stock_code" placeholder="code">
-        <input type = submit value = "search">
-    </form>
-    <form method="post" action="/search/">
-        {% csrf_token %}
-        <input type="text" name = "stock_code" placeholder="code">
-        <input type = submit value = "search">
-    </form>
+<form method="post" action="/search/">
+    {% csrf_token %}
+    <input type="text" name="stock_code" placeholder="code">
+    <input type=submit value="search">
+</form>
+<form method="post" action="/search/">
+    {% csrf_token %}
+    <input type="text" name="stock_code" placeholder="code">
+    <input type=submit value="search">
+</form>
 
 </body>
 </html>

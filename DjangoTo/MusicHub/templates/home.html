@@ -12,43 +12,43 @@
 <div style="text-align: center;">
 
     {% block body_block %}
-        <div>
-            <p><b>Hottest Song </b></p>
-            <div align="center">
-                <table border="1">
-                    <tr>
-                        <th>title</th>
-                        <th>artist</th>
-                        <th>album</th>
-                        <th>times</th>
-                    </tr>
-                    {% for row in  recommandsongtable %}
-                        <tr>
-                            {% for number in row %}
-                                <td>{{ number }}</td>
-                            {% endfor %}
-                        </tr>
+    <div>
+        <p><b>Hottest Song </b></p>
+        <div align="center">
+            <table border="1">
+                <tr>
+                    <th>title</th>
+                    <th>artist</th>
+                    <th>album</th>
+                    <th>times</th>
+                </tr>
+                {% for row in recommandsongtable %}
+                <tr>
+                    {% for number in row %}
+                    <td>{{ number }}</td>
                     {% endfor %}
-                </table>
-            </div>
-            <p><b>Recommend Song</b></p>
-            <div align="center">
-                <table border="1">
-                    <tr>
-                        <th>title</th>
-                        <th>artist</th>
-                        <th>album</th>
-                    </tr>
-                    {% for row in  hottestsongtable %}
-                        <tr>
-                            {% for number in row %}
-                                <td>{{ number }}</td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                    </table>
-            </div>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
+        <p><b>Recommend Song</b></p>
+        <div align="center">
+            <table border="1">
+                <tr>
+                    <th>title</th>
+                    <th>artist</th>
+                    <th>album</th>
+                </tr>
+                {% for row in hottestsongtable %}
+                <tr>
+                    {% for number in row %}
+                    <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
     {% endblock %}
 
     <script src="{% static 'jquery/jquery-3.6.1.min.js' %}"></script>

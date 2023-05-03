@@ -1,17 +1,17 @@
 {% extends "home.html" %}
 {% block body_block %}
-    <table border="1"  align="center">
-        <tr>
-            <th>Account Number</th>
-            <th>User Type</th>
-        </tr>
-        {% for row in  personalcentertable %}
-            <tr>
-                {% for number in row %}
-                    <td>{{ number }}</td>
-                {% endfor %}
-            </tr>
+<table border="1" align="center">
+    <tr>
+        <th>Account Number</th>
+        <th>User Type</th>
+    </tr>
+    {% for row in personalcentertable %}
+    <tr>
+        {% for number in row %}
+        <td>{{ number }}</td>
         {% endfor %}
-    </table>
-    <button type="button"><a href="/login">EXIT!</a></button>
+    </tr>
+    {% endfor %}
+</table>
+<button type="button"><a href="/login">EXIT!</a></button>
 {% endblock %}

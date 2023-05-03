@@ -31,5 +31,5 @@ urlpatterns = [
     path('userInformation_normalUser/', views.userInformation_normalUser, name='userInformation_normalUser'),
     path('deleteUser/', views.deleteUser, name="deleteUser"),
     path('addAnyUser/', views.addAnyUser, name="addAnyUser"),
-    path('dataAnalysis/',views.dataAnalysis,name = "dataAnalysis")
+    path('dataAnalysis/', views.dataAnalysis, name="dataAnalysis")
 ]

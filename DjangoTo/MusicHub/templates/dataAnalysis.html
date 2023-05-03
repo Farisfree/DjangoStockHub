@@ -1,42 +1,42 @@
 {% extends "home.html" %}
 {% load static %}
 {% block body_block %}
-    <h3>Number of songs on the album</h3>
-    <img src="{% static 'MusicHub/img/album.png' %}" alt="MusicHubLOGO" height="300px">
+<h3>Number of songs on the album</h3>
+<img src="{% static 'MusicHub/img/album.png' %}" alt="MusicHubLOGO" height="300px">
 
-    <table border="1"  align="center">
-        <tr>
-            <th>Maximum</th>
-            <th>Minimum</th>
-            <th>Average</th>
-        <tr>
-        <tr>
-            <td align="center">{{ maxinum2 }}</td>
-            <td align="center">{{ mininum2 }}</td>
-            <td align="center">{{ average2 }}</td>
+<table border="1" align="center">
+    <tr>
+        <th>Maximum</th>
+        <th>Minimum</th>
+        <th>Average</th>
+    <tr>
+    <tr>
+        <td align="center">{{ maxinum2 }}</td>
+        <td align="center">{{ mininum2 }}</td>
+        <td align="center">{{ average2 }}</td>
 
-        </tr>
-    </table>
+    </tr>
+</table>
 
-    <h3>Top 20 album with the most number of songs</h3>
-    <img src="{% static 'MusicHub/img/2.png' %}" alt="MusicHubLOGO" height="300px">
-    <h3>Number of songs by the artist</h3>
-    <img src="{% static 'MusicHub/img/artist.png' %}" alt="MusicHubLOGO" height="300px">
-    <table border="1"  align="center">
-        <tr align="center">
-            <th>Maximum</th>
-            <th>Minimum</th>
-            <th>Average</th>
-        <tr>
-        <tr align="center">
-            <td align="center">{{ maxinum1 }}</td>
-            <td align="center">{{ mininum1 }}</td>
-            <td align="center">{{ average1 }}</td>
+<h3>Top 20 album with the most number of songs</h3>
+<img src="{% static 'MusicHub/img/2.png' %}" alt="MusicHubLOGO" height="300px">
+<h3>Number of songs by the artist</h3>
+<img src="{% static 'MusicHub/img/artist.png' %}" alt="MusicHubLOGO" height="300px">
+<table border="1" align="center">
+    <tr align="center">
+        <th>Maximum</th>
+        <th>Minimum</th>
+        <th>Average</th>
+    <tr>
+    <tr align="center">
+        <td align="center">{{ maxinum1 }}</td>
+        <td align="center">{{ mininum1 }}</td>
+        <td align="center">{{ average1 }}</td>
 
-        </tr>
-    </table>
+    </tr>
+</table>
 
-    <h3>Top 20 artists with the most number of songs</h3>
-    <img src="{% static 'MusicHub/img/1.png' %}" alt="MusicHubLOGO" height="300px">
+<h3>Top 20 artists with the most number of songs</h3>
+<img src="{% static 'MusicHub/img/1.png' %}" alt="MusicHubLOGO" height="300px">
 
 {% endblock %}

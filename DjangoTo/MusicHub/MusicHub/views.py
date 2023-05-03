@@ -296,4 +296,4 @@ def dataAnalysis(request):
     # plt.savefig("2.png")
     return render(request, 'dataAnalysis.html',
                   {"average1": average1, "average2": average2, "maxinum1": maxinum1, "maxinum2": maxinum2,
-                   "mininum1": mininum1, "mininum2": mininum2, "counter2":counter2, "counter1":counter1})
+                   "mininum1": mininum1, "mininum2": mininum2, "counter2": counter2, "counter1": counter1})

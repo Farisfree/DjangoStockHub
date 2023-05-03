@@ -11,14 +11,14 @@
     <h2>REGISTRATION</h2>
     <form action="{% url 'handleRegistration' %}" method="post">
         {% csrf_token %}
-            <label>
-                Account Number:
-                <input type="text" name="AccountNumber">
-                Password:
-                <input type="text" name="Password">
-            </label>
-            <input type="submit" value="Register">
-            {{ warning }}
+        <label>
+            Account Number:
+            <input type="text" name="AccountNumber">
+            Password:
+            <input type="text" name="Password">
+        </label>
+        <input type="submit" value="Register">
+        {{ warning }}
     </form>
 </div>
 </body>
