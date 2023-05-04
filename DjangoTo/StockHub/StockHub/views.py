@@ -30,10 +30,12 @@ def login(request):
         check = cursor.execute(f"select * from people where user_id = {tmp_id} and passwd = {password}")
 
         if check:
-            global user_id
-            user_id= tmp_id
-            print(user_id)
-            # type = cursor.fetchall()
+            info = cursor.fetchall()
+            type = int(info[0][1])
+
+            global user_id, user_type
+            user_id= tmp_id, user_type = type
+
             return render(request, "home.html")
         else:
             return HttpResponse("错误")
