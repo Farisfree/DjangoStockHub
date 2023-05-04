@@ -11,7 +11,6 @@
 <div style="text-align: center;">
     <div>
         <img src="{% static 'StockHub/img/stockhub.png' %}" alt="MusicHubLOGO" height="80px">
-
     </div>
 
     <form action= "{% url "handleLogin" %}"  method="post">
@@ -28,6 +27,7 @@
         <h1>{{ warnings }}</h1>
     </div>
     </form>
+
     {{ warning1 }}
     {{ hint }}
     <a href="/registration">If you don't have an account yet,pls click here!</a>

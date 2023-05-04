@@ -1,7 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from . import service
-from .models import People
 from django.shortcuts import HttpResponse
 from pymysql import Connection
 import pandas as pd
@@ -10,7 +9,7 @@ import pandas as pd
 conn = Connection(
     host='localhost',
     port=3306,
-    user='st',
+    user='stock',
     password='123456',
     autocommit=True
 )
