@@ -8,8 +8,8 @@ import pandas as pd
 conn = Connection(
     host='localhost',
     port=3306,
-    user='stock',
-    password='123456',
+    user='root',
+    password='wu101402',
     autocommit=True
 )
 
@@ -29,15 +29,11 @@ def login(request):
 
         check = cursor.execute(f"select * from people where user_id = {tmp_id} and passwd = {password}")
 
-        info = cursor.fetchall()
-
-        data = pd.DataFrame(info, columns=['user_id', 'user_pwd', 'user_type'])
-
-        global user_id, user_type
-        user_id = tmp_id, user_type = data['user_type']
-        print(user_id, user_type)
-
         if check:
+            global user_id
+            user_id= tmp_id
+            print(user_id)
+            # type = cursor.fetchall()
             return render(request, "home.html")
         else:
             return HttpResponse("错误")
