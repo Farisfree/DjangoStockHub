@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-{% load static %}
+
 <body>
+{% load static %}
 <div style="text-align: center;">
     <div>
-        <img src="{% static 'MusicHub/img/PornHubLogo.png' %}" alt="MusicHubLOGO" height="80px">
+        <img src="{% static 'MusicHub/img/stockhub.png' %}" alt="MusicHubLOGO" height="80px">
 
     </div>
 
-    <form action="{% url " handleLogin" %}" method="post">
+    <form action= "{% url "handleLogin" %}"  method="post">
     {% csrf_token %}
     <div>
         <h2>LOGIN</h2>
