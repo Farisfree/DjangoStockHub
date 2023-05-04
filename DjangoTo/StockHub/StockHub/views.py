@@ -8,8 +8,8 @@ import pandas as pd
 conn = Connection(
     host='localhost',
     port=3306,
-    user='root',
-    password='wu101402',
+    user='stock',
+    password='123456',
     autocommit=True
 )
 
@@ -27,7 +27,7 @@ def login(request):
         tmp_id = request.POST.get("user_id")
         password = request.POST.get("user_password")
 
-        check = cursor.execute(f"select * from people where user_id = {tmp_id} and password = {password}")
+        check = cursor.execute(f"select * from people where user_id = {tmp_id} and passwd = {password}")
 
         info = cursor.fetchall()
 
@@ -53,12 +53,12 @@ def search(request):
     stock_name = request.POST.get('stock_name')
     # 这里搜索成功后就是跳转到展示信息的页面
     if stock_code:
-        cursor.execute(f'select * from stock_basic_info where R_SecuCode = {stock_code}')
+        cursor.execute(f'select * from stock_basic_info where SecuCode = {stock_code}')
         info = cursor.fetchall()
         data = pd.DataFrameinfo()
         return HttpResponse("以代码搜索股票")
     if stock_name:
-        cursor.execute(f'select * from stock_basic_info where R_SecuCode = {stock_name}')
+        cursor.execute(f'select * from stock_basic_info where SecuCode = {stock_name}')
         info = cursor.fetchall()
         data = pd.DataFrameinfo()
         return HttpResponse("以名字搜索股票")
@@ -71,11 +71,11 @@ def register(request):
         user_id = request.POST.get("user_id")
         user_password = request.POST.get("user_password")
 
-        check = cursor.execute(f'select * from user_info where user_id = {user_id}')
+        check = cursor.execute(f'select * from people where user_id = {user_id}')
         if check:
             return HttpResponse("用户已存在")
         else:
-            cursor.execute(f'insert into user_info(user_id, user_pwd) values ({user_id},{user_password})')
+            cursor.execute(f'insert into people(user_id, passwd) values ({user_id},{user_password})')
             # 这里你看看是返回到登录界面还是直接跳到主界面
             return HttpResponse("注册成功")
 
@@ -92,9 +92,9 @@ def delete(request):
         user_id = request.POST.get("user_id")
         user_password = request.POST.get("user_password")
 
-        check = cursor.execute(f'select * from user_info where user_id = {user_id} and user_pwd = {user_password}')
+        check = cursor.execute(f'select * from people where user_id = {user_id} and passwd = {user_password}')
         if check:
-            cursor.execute(f'delete from user_info where user_id = {user_id}')
+            cursor.execute(f'delete from people where user_id = {user_id}')
             return render(request, 'delete.html')
         else:
             # 加一个删除失败的跳窗在 delete的界面上

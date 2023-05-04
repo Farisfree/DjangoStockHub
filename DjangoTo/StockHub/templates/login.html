@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,10 +7,8 @@
 </head>
 <body>
     <div>Hello</div>
-
+ {% csrf_token %}
     <form method="post" action="/login/">
-
-
 
         <input type="text" name = "user_id" placeholder="账号">
         <input type="password" name = "user_password" placeholder="密码">
