@@ -79,14 +79,7 @@ WSGI_APPLICATION = 'StockHub.wsgi.application'
 #     }
 # }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': "stockhub",
-        'HOST': '127.0.0.1',
-        "PORT": 3306,
-        'USER': 'faris',
-        'PASSWORD': '123456',
-    }
+
 }
 
 # Password validation

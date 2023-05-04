@@ -1,7 +1,5 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from . import service
-from .models import People
 from django.shortcuts import HttpResponse
 from pymysql import Connection
 import pandas as pd
@@ -10,21 +8,15 @@ import pandas as pd
 conn = Connection(
     host='localhost',
     port=3306,
-    user='st',
-    password='123456',
+    user='root',
+    password='wu101402',
     autocommit=True
 )
 
 conn.select_db('stockhub')
 cursor = conn.cursor()
 user_type = ""
-
-
-def login(request):
-    return render(request, 'login.html', {})
-
-
-
+user_id = ""
 
 
 def login(request):
@@ -32,16 +24,18 @@ def login(request):
         return render(request, "login.html")
 
     else:
-        user_id = request.POST.get("user_id")
-        user_password = request.POST.get("user_password")
+        tmp_id = request.POST.get("user_id")
+        password = request.POST.get("user_password")
 
-        check = cursor.execute(f"select * from user_info where user_id = {user_id} and user_pwd = {user_password}")
+        check = cursor.execute(f"select * from people where user_id = {tmp_id} and password = {password}")
 
         info = cursor.fetchall()
 
         data = pd.DataFrame(info, columns=['user_id', 'user_pwd', 'user_type'])
 
-        user_type = data['user_type']
+        global user_id, user_type
+        user_id = tmp_id, user_type = data['user_type']
+        print(user_id, user_type)
 
         if check:
             return render(request, "home.html")

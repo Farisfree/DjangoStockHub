@@ -1,37 +1,22 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-
 <body>
-{% load static %}
-<div style="text-align: center;">
-    <div>
-        <img src="{% static 'StockHub/img/stockhub.png' %}" alt="MusicHubLOGO" height="80px">
+    <div>Hello</div>
 
-    </div>
+    <form method="post" action="/login/">
 
-    <form action= "{% url "handleLogin" %}"  method="post">
-    {% csrf_token %}
-    <div>
-        <h2> LOGIN </h2>
-        <label>
-            Account Number
-            <input type="text" name="user_id">
-            Password
-            <input type="text" name="user_password">
-        </label>
-        <input type="submit" value="login">
-        <h1>{{ warnings }}</h1>
-    </div>
+
+
+        <input type="text" name = "user_id" placeholder="账号">
+        <input type="password" name = "user_password" placeholder="密码">
+        <input type = submit value = "login">
+
     </form>
-    {{ warning1 }}
-    {{ hint }}
-    <a href="/registration">If you don't have an account yet,pls click here!</a>
-</div>
 </body>
 </html>
+
 
