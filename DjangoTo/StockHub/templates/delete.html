@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+ {% csrf_token %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +8,7 @@
 <body>
      <form method="post" action="/delete/">
         {% csrf_token %}
-
+ {% csrf_token %}
 
         <input type="text" name = "user_id" placeholder="账号">
         <input type="password" name = "user_password" placeholder="密码">
