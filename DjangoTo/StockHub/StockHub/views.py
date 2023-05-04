@@ -4,7 +4,6 @@ from django.shortcuts import HttpResponse
 from pymysql import Connection
 import pandas as pd
 
-
 conn = Connection(
     host='localhost',
     port=3306,
@@ -20,6 +19,7 @@ user_id = ""
 
 
 def login(request):
+    warning1 = '（WARNING：Please enter the correct account and password!）'
     if request.method == 'GET':
         return render(request, "login.html")
 
@@ -29,18 +29,15 @@ def login(request):
 
         check = cursor.execute(f"select * from people where user_id = {tmp_id} and passwd = {password}")
 
-        info = cursor.fetchall()
-
-        data = pd.DataFrame(info, columns=['user_id', 'user_pwd', 'user_type'])
-
-        global user_id, user_type
-        user_id = tmp_id, user_type = data['user_type']
-        print(user_id, user_type)
-
         if check:
+            info = cursor.fetchall()
+            data = pd.DataFrame(info, columns=['user_id', 'user_pwd', 'user_type'])
+
+            global user_id, user_type
+            user_id = tmp_id, user_type = data['user_type']
             return render(request, "home.html")
         else:
-            return HttpResponse("错误")
+            return render(request, "login.html", {"warning1": warning1})
 
 
 # search 这一部分有一点疑问 ： 我们是一个表一个function 还是中间还有一个跳转界面来决定展示哪一部分
@@ -84,7 +81,7 @@ def register(request):
 def delete(request):
     if request.method == "GET":
         if user_type == '2':
-            return render(request,'delete.html')
+            return render(request, 'delete.html')
         else:
             return render(request, 'tmp.html')
 
@@ -99,4 +96,3 @@ def delete(request):
         else:
             # 加一个删除失败的跳窗在 delete的界面上
             return HttpResponse("用户或者密码错误")
-
