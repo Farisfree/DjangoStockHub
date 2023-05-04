@@ -8,8 +8,8 @@ import pandas as pd
 conn = Connection(
     host='localhost',
     port=3306,
-    user='root',
-    password='wu101402',
+    user='stock',
+    password='123456',
     autocommit=True
 )
 
@@ -90,7 +90,7 @@ def register(request):
 def delete(request):
     if request.method == "GET":
         if user_type == '2':
-            return render(request,'delete.html')
+            return render(request, 'delete.html')
         else:
             return render(request, 'tmp.html')
 
@@ -106,3 +106,6 @@ def delete(request):
             # 加一个删除失败的跳窗在 delete的界面上
             return HttpResponse("用户或者密码错误")
 
+
+def home(request):
+    return render(request, 'home.html')
