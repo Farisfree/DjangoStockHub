@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,14 +10,14 @@
 {% load static %}
 <div style="text-align: center;">
     <div>
-        <img src="{% static 'MusicHub/img/stockhub.png' %}" alt="MusicHubLOGO" height="80px">
+        <img src="{% static 'StockHub/img/stockhub.png' %}" alt="MusicHubLOGO" height="80px">
 
     </div>
 
     <form action= "{% url "handleLogin" %}"  method="post">
     {% csrf_token %}
     <div>
-        <h2>LOGIN</h2>
+        <h2> LOGIN </h2>
         <label>
             Account Number
             <input type="text" name="user_id">
