@@ -16,11 +16,12 @@ conn = Connection(
 conn.select_db('stockhub')
 cursor = conn.cursor()
 user_type = 2 # 用来判断用户类型
-user_id = ""
+user_id = "222"
+stock_code = ""
+stock_name = ""
 
 
-def test(request):
-    return render(request, "test.html")
+
 
 
 def login(request):
@@ -123,10 +124,12 @@ def stock_basic_info(request):
 
             check = cursor.execute(f"select * from stock_basic_info where SecuCode = '{SecuCode}'")
             if check:
+                global stock_code
+                stock_code = SecuCode
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
             else:
                 return render(request, "searchFail.html")
         # 以名字判断
@@ -134,15 +137,26 @@ def stock_basic_info(request):
 
             check = cursor.execute(f"select * from stock_basic_info where  Lstknm = '{Lstknm}'")
             if check:
+                global stock_name
+                stock_name = Lstknm
+
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
             else:
                 return render(request, "searchFail.html")
             # 什么都没有输入 搜索失败
         else:
             return render(request, "searchFail.html")
+
+
+def collect(request):
+    name = (stock_name or stock_code)
+    # print(name)
+    cursor.execute(f"insert into collection(user_id, SecuCode) values ('{user_id}','{name}')")
+    # print(f"insert into collection(user_id, SecuCode) values ('{user_id}','{name}')")
+    return HttpResponse("收藏成功")
 
 
 def stock_daily_data(request):
@@ -162,7 +176,7 @@ def stock_daily_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -171,7 +185,7 @@ def stock_daily_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -197,7 +211,7 @@ def stock_dividend_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -206,7 +220,7 @@ def stock_dividend_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -232,7 +246,7 @@ def stock_fees_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -241,7 +255,7 @@ def stock_fees_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -267,7 +281,7 @@ def stock_financial_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -276,7 +290,7 @@ def stock_financial_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -302,7 +316,7 @@ def stock_price_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -311,7 +325,7 @@ def stock_price_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -337,7 +351,7 @@ def stock_ratios_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -346,7 +360,7 @@ def stock_ratios_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -372,7 +386,7 @@ def stock_return_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -381,7 +395,7 @@ def stock_return_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -407,7 +421,7 @@ def stock_shares_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -416,7 +430,7 @@ def stock_shares_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return HttpResponse("搜索成功")
+                return render(request,"show.html")
 
             else:
                 return render(request, "searchFail.html")

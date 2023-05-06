@@ -21,6 +21,6 @@ urlpatterns = [
     path('stock_return_data/', views.stock_return_data),
     path('stock_shares_data/', views.stock_shares_data),
 
-    path('test/', views.test),
+    path('collect/', views.collect),
 
 ]
