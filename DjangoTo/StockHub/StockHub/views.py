@@ -8,8 +8,8 @@ import pandas as pd
 conn = Connection(
     host='localhost',
     port=3306,
-    user='root',
-    password='wu101402',
+    user='stock',
+    password='123456',
     autocommit=True
 )
 
