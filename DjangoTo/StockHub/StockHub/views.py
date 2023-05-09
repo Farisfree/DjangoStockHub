@@ -21,9 +21,6 @@ stock_code = ""
 stock_name = ""
 
 
-
-
-
 def login(request):
     if request.method == 'GET':
         return render(request, "login.html")
