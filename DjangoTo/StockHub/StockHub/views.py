@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.core.cache import cache
 from django.shortcuts import HttpResponse
 from pymysql import Connection
 import pandas as pd
@@ -7,7 +8,7 @@ import pandas as pd
 
 conn = Connection(
     host='localhost',
-    port=3306,
+    port=3316,
     user='stock',
     password='123456',
     autocommit=True
@@ -466,3 +467,49 @@ def home(request):
 # 展示所有可以搜索的目录
 def search_list(request):
     return render(request, "search_list.html")
+
+
+
+
+def historysearch(request):
+    if request.method == 'GET':
+        keyword = request.GET.get('keyword', '')
+        if keyword:
+            # 将关键字添加到缓存中
+            history = cache.get('search_history', [])
+            history.append(keyword)
+            cache.set('search_history', history, timeout=None)
+            # 进行搜索...
+            # 返回搜索结果...
+    # 获取历史记录列表
+    history = cache.get('search_history', [])
+    # 渲染模板并返回响应
+    return render(request, "historysearch.html")
+
+# myapp/views.py
+
+
+
+from django.contrib.auth.decorators import login_required
+from .models import UserProfile
+
+@login_required
+def profile(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    return render(request, "profile.html")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -22,5 +22,8 @@ urlpatterns = [
     path('stock_shares_data/', views.stock_shares_data),
 
     path('collect/', views.collect),
+    path('historysearch/', views.historysearch),
+    path('profile/', views.profile),
+
 
 ]
