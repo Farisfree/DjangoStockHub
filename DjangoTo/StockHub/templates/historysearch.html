@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+    <title>搜索</title>
+</head>
+<body>
+    <form method="post" action="/search/">
+        {% csrf_token %}
+        <input type="text" name = "stock_code" placeholder="code">
+        <input type = submit value = "search">
+    </form>
+    <form method="post" action="/search/">
+        {% csrf_token %}
+        <input type="text" name = "stock_name" placeholder="name">
+        <input type = submit value = "search">
+    </form>
+
+  <h2>Search history</h2>
+  <ul>
+    {% for keyword in history %}
+      <li>{{ keyword }}</li>
+    {% empty %}
+      <li>No search history</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
