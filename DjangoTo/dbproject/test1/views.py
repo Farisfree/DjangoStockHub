@@ -34,7 +34,7 @@ def test(request):
         user_type = data['user_type']
 
         if check:
-            return render(request, "tmp.html")
+            return render(request, "refuse.html")
         else:
             return HttpResponse("错误")
 
@@ -51,4 +51,4 @@ def show(request):
 
     data = pd.DataFrame(info, columns=['user_id', 'user_pwd', 'user_type'])
 
-    return render(request, "tmp.html", {"info": info, "data": data})
+    return render(request, "refuse.html", {"info": info, "data": data})

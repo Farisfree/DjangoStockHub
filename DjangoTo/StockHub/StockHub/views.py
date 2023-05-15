@@ -1,7 +1,6 @@
-from linecache import cache
-
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.core.cache import cache
 from django.shortcuts import HttpResponse
 from pymysql import Connection
 import pandas as pd
@@ -9,9 +8,9 @@ import pandas as pd
 
 conn = Connection(
     host='localhost',
-    port=3306,
-    user='root',
-    password='wu101402',
+    port=3316,
+    user='stock',
+    password='123456',
     autocommit=True
 )
 
@@ -21,9 +20,6 @@ user_type = 2 # 用来判断用户类型
 user_id = "222"
 stock_code = ""
 stock_name = ""
-
-
-
 
 
 def login(request):
@@ -52,6 +48,28 @@ def login(request):
             return HttpResponse("错误")
 
 
+# search 这一部分有一点疑问 ： 我们是一个表一个function 还是中间还有一个跳转界面来决定展示哪一部分
+# (存疑 回学校跟你说)
+# def search(request):
+#     if request.method == 'GET':
+#         return render(request, "search.html", {"user_type": user_type})
+#
+#     stock_code = request.POST.get('stock_code')
+#     code_check = cursor.execute(f'select * from ')
+#     stock_name = request.POST.get('stock_name')
+#     # 这里搜索成功后就是跳转到展示信息的页面
+#     if stock_code:
+#         cursor.execute(f'select * from stock_basic_info where SecuCode = {stock_code}')
+#         info = cursor.fetchall()
+#         data = pd.DataFrameinfo()
+#         return HttpResponse("以代码搜索股票")
+#     if stock_name:
+#         cursor.execute(f'select * from stock_basic_info where SecuCode = {stock_name}')
+#         info = cursor.fetchall()
+#         data = pd.DataFrameinfo()
+#         return HttpResponse("以名字搜索股票")
+#     else:
+#         return HttpResponse("输入错误")
 
 
 def register(request):
@@ -168,7 +186,6 @@ def stock_daily_data(request):
             if check:
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
-                print(data)
 
                 return render(request,"show.html")
 
@@ -455,7 +472,32 @@ def search_list(request):
 
 
 
+def historysearch(request):
+    if request.method == 'GET':
+        keyword = request.GET.get('keyword', '')
+        if keyword:
+            # 将关键字添加到缓存中
+            history = cache.get('search_history', [])
+            history.append(keyword)
+            cache.set('search_history', history, timeout=None)
+            # 进行搜索...
+            # 返回搜索结果...
+    # 获取历史记录列表
+    history = cache.get('search_history', [])
+    # 渲染模板并返回响应
+    return render(request, "historysearch.html")
 
+# myapp/views.py
+
+
+
+from django.contrib.auth.decorators import login_required
+from .models import UserProfile
+
+@login_required
+def profile(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    return render(request, "profile.html")
 
 
 
