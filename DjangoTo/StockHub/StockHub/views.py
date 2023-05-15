@@ -8,7 +8,7 @@ import pandas as pd
 
 conn = Connection(
     host='localhost',
-    port=3316,
+    port=3306,
     user='stock',
     password='123456',
     autocommit=True
@@ -16,36 +16,39 @@ conn = Connection(
 
 conn.select_db('stockhub')
 cursor = conn.cursor()
-user_type = 2 # 用来判断用户类型
-user_id = "222"
+user_type = "0" # 用来判断用户类型
+user_id = ""
 stock_code = ""
 stock_name = ""
 
 
 def login(request):
+    warning1 = '（WARNING：Please enter the correct account and password!）'
     if request.method == 'GET':
         return render(request, "login.html")
 
     else:
+
         tmp_id = request.POST.get("user_id")
         password = request.POST.get("user_password")
+        if tmp_id and password:
+            check = cursor.execute(f"select user_type from people where user_id = {tmp_id} and passwd = {password}")
+            if check:
+                info = cursor.fetchall()
 
-        check = cursor.execute(f"select user_type from people where user_id = {tmp_id} and passwd = {password}")
+                tmp_type = int(info[0][0])
+                tmp_type = str(tmp_type)
 
-        if check:
-            info = cursor.fetchall()
+                global user_id
+                user_id= tmp_id
+                global user_type
+                user_type = tmp_type
+                print(user_id)
+                print(user_type)
 
-            tmp_type = int(info[0][0])
-            tmp_type = str(tmp_type)
-
-            global user_id
-            user_id= tmp_id
-            global user_type
-            user_type = tmp_type
-
-            return render(request, "home.html")
+                return render(request, "home.html")
         else:
-            return HttpResponse("错误")
+            return render(request, "login.html",{'warning1':warning1})
 
 
 # search 这一部分有一点疑问 ： 我们是一个表一个function 还是中间还有一个跳转界面来决定展示哪一部分
@@ -78,35 +81,40 @@ def register(request):
     else:
         user_id = request.POST.get("user_id")
         user_password = request.POST.get("user_password")
-
-        check = cursor.execute(f'select * from people where user_id = {user_id}')
-        if check:
-            return HttpResponse("用户已存在")
-        else:
-            cursor.execute(f'insert into people(user_id, passwd) values ({user_id},{user_password})')
-            # 这里你看看是返回到登录界面还是直接跳到主界面
-            return render(request, "home.html")
+        if(user_id and user_password):
+            check = cursor.execute(f'select * from people where user_id = {user_id}')
+            if check:
+                return HttpResponse("用户已存在")
+            else:
+                cursor.execute(f'insert into people(user_id,user_type, passwd) values ({user_id},{0},{user_password})')
+                return render(request, "login.html")
 
 
 # 注意体一下，在测试的时候 全局变量type 要设置成为字符串的形式(改int也行)
 def delete(request):
-    if request.method == "GET":
-        if user_type == '2':
-            return render(request, 'delete.html')
+    if user_type == "2":
+        cursor.execute("SELECT * from people")
+        result = cursor.fetchall()
+        AllInformation = pd.DataFrame(result, columns=[i[0] for i in cursor.description])
+        print(AllInformation)
+        if request.method == "GET":
+            id = request.POST.get("user_id")
+            password = request.POST.get("user_password")
+            if id and password:
+                check = cursor.execute(f'select * from people where user_id = {id} and passwd = {password}')
+                if check:
+                    cursor.execute(f'delete from people where user_id = {id}')
+                    return render(request, 'delete.html')
+                else:
+                    delete_info = "Please input the user_id and password, do not leaver it empty!"
+                    return render(request, 'delete.html',{"delete_info":delete_info,"AllInformation":AllInformation})
+            else:
+                delete_info = "Please input the correct user_id and password"
+                return  render(request,'delete.html',{"delete_info" : delete_info,"AllInformation":AllInformation})
         else:
-            return render(request, 'tmp.html')
-
+            return render(request, 'delete.html',{"AllInformation":AllInformation})
     else:
-        id = request.POST.get("user_id")
-        password = request.POST.get("user_password")
-
-        check = cursor.execute(f'select * from people where user_id = {id} and passwd = {password}')
-        if check:
-            cursor.execute(f'delete from people where user_id = {id}')
-            return render(request, 'delete.html')
-        else:
-            # 加一个删除失败的跳窗在 delete的界面上
-            return HttpResponse("用户或者密码错误")
+        return render(request, 'refuse.html')
 
 
 def stock_basic_info(request):

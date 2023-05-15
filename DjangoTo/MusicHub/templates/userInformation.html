@@ -6,6 +6,7 @@
         <th>User Type</th>
         <th>Delete User</th>
     </tr>
+
     {% for row in userinformationtable %}
     <tr>
         {% for number in row %}
@@ -13,8 +14,7 @@
         {% endfor %}
         <td>
             <div>
-                <form action="{% url " deleteUser
-                " %}" method="post">
+                <form action="{% url " deleteUser" %}" method="post">
                 {% csrf_token %}
                 <label>
                     <input type="text" name="删除的用户" value={{ row|first }} readonly="readonly">

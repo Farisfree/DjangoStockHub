@@ -3,13 +3,13 @@ from . import views
 
 urlpatterns = [
     #path('login/', views.login),
+    path('', views.login),
     path('login/', views.login),
     # path('search/', views.search),
     path('register/',views.register),
     path('delete/', views.delete),
     path('home/',views.home),
     # path('searchlist/', views.search_list),
-    path('', views.search_list),
 
     path('stock_basic_info/', views.stock_basic_info),
     path('stock_daily_data/', views.stock_daily_data),
@@ -24,6 +24,5 @@ urlpatterns = [
     path('collect/', views.collect),
     path('historysearch/', views.historysearch),
     path('profile/', views.profile),
-
 
 ]

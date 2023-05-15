@@ -1,18 +1,32 @@
 <!DOCTYPE html>
- {% csrf_token %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>删除</title>
+    <title>User information</title>
 </head>
 <body>
-     <form method="post" action="/delete/">
-        {% csrf_token %}
- {% csrf_token %}
+<div style="text-align: center;">
+<form method="post" action="delete/">
 
-        <input type="text" name = "user_id" placeholder="账号">
-        <input type="password" name = "user_password" placeholder="密码">
-        <input type = submit value = "delete">
-     </form>
+    {% csrf_token %}
+    <h2>You can delete the users here</h2>
+    <label>
+        Account number:
+        <input type="text" name="user_id" placeholder="账号">
+        Password:
+        <input type="password" name="user_password" placeholder="密码">
+    </label>
+    <input type=submit value="delete">
+<div>
+    {% for row in AllInformation %}
+        <tr>
+    {% for number in row %}
+        <td>{{ number }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+</div>
+</form>
+</div>
 </body>
 </html>
