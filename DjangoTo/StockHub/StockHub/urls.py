@@ -7,7 +7,7 @@ urlpatterns = [
     # path('search/', views.search),
     path('register/',views.register),
     path('delete/', views.delete),
-    path('home/',views.home),
+    # path('home/',views.home),
     # path('searchlist/', views.search_list),
     path('', views.search_list),
 
@@ -22,8 +22,8 @@ urlpatterns = [
     path('stock_shares_data/', views.stock_shares_data),
 
     path('collect/', views.collect),
-    path('historysearch/', views.historysearch),
-    path('profile/', views.profile),
+    #path('historysearch/', views.historysearch),
+    #
 
 
 ]
