@@ -50,30 +50,6 @@ def login(request):
             return render(request, "login.html", {"warning1": warning1})
 
 
-# search 这一部分有一点疑问 ： 我们是一个表一个function 还是中间还有一个跳转界面来决定展示哪一部分
-# (存疑 回学校跟你说)
-# def search(request):
-#     if request.method == 'GET':
-#         return render(request, "search.html", {"user_type": user_type})
-#
-#     stock_code = request.POST.get('stock_code')
-#     code_check = cursor.execute(f'select * from ')
-#     stock_name = request.POST.get('stock_name')
-#     # 这里搜索成功后就是跳转到展示信息的页面
-#     if stock_code:
-#         cursor.execute(f'select * from stock_basic_info where SecuCode = {stock_code}')
-#         info = cursor.fetchall()
-#         data = pd.DataFrameinfo()
-#         return HttpResponse("以代码搜索股票")
-#     if stock_name:
-#         cursor.execute(f'select * from stock_basic_info where SecuCode = {stock_name}')
-#         info = cursor.fetchall()
-#         data = pd.DataFrameinfo()
-#         return HttpResponse("以名字搜索股票")
-#     else:
-#         return HttpResponse("输入错误")
-
-
 def register(request):
     if request.method == "GET":
         return render(request, "register.html")
@@ -97,12 +73,10 @@ def register(request):
 def delete(request):
     cursor.execute("Select * from people")
     data = cursor.fetchall()
-    columns = [desc[0] for desc in cursor.description]
-    df = pd.DataFrame(data, columns=columns)
 
     if request.method == "GET":
         if user_type == '2':
-            return render(request, 'delete.html', {"AllInformation": df})
+            return render(request, 'delete.html', {"AllInformation": data})
         else:
             return render(request, 'refuse.html')
 
@@ -113,13 +87,13 @@ def delete(request):
             check = cursor.execute(f'select * from people where user_id = {userid} and passwd = {password}')
             if check:
                 cursor.execute(f'delete from people where user_id = {userid}')
-                return render(request, 'delete.html')
+                return render(request, 'delete.html', {"AllInformation": data})
             else:
                 warning1 = "Please input the correct user_id and pass_word"
-                return render(request, "delete.html", {"warning1": warning1})
+                return render(request, "delete.html", {"warning1": warning1, "AllInformation": data})
         else:
             warning1 = "Do not leave it empty!"
-            return render(request, "delete.html", {"warning1": warning1})
+            return render(request, "delete.html", {"warning1": warning1, "AllInformation": data})
 
 
 def stock_basic_info(request):
@@ -138,10 +112,10 @@ def stock_basic_info(request):
                 global stock_code
                 stock_code = SecuCode
                 info = cursor.fetchall()
-                data = pd.DataFrame(info)
+
                 cursor.execute(
                     f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{SecuCode}')")
-                return render(request, "show.html")
+                return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
         # 以名字判断
@@ -153,9 +127,8 @@ def stock_basic_info(request):
                 stock_name = Lstknm
 
                 info = cursor.fetchall()
-                data = pd.DataFrame(info)
 
-                return render(request, "show.html")
+                return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
             # 什么都没有输入 搜索失败
@@ -169,6 +142,12 @@ def collect(request):
     cursor.execute(f"insert into collection(user_id, SecuCode) values ('{user_id}','{name}')")
     # print(f"insert into collection(user_id, SecuCode) values ('{user_id}','{name}')")
     return HttpResponse("收藏成功")
+
+
+def collectInterface(request):
+    cursor.execute("Select * from collection")
+    info = cursor.fetchall()
+    return render(request, "collectInterface.html", {'data': info})
 
 
 def stock_daily_data(request):
@@ -464,20 +443,16 @@ def search_list(request):
     return render(request, "search_list.html")
 
 
-def historysearch(request):
-    if request.method == 'GET':
-        keyword = request.GET.get('keyword', '')
-        if keyword:
-            # 将关键字添加到缓存中
-            history = cache.get('search_history', [])
-            history.append(keyword)
-            cache.set('search_history', history, timeout=None)
-            # 进行搜索...
-            # 返回搜索结果...
-    # 获取历史记录列表
-    history = cache.get('search_history', [])
-    # 渲染模板并返回响应
-    return render(request, "historysearch.html")
+def personalCenter(request):
+    return render(request, 'personalCenter.html')
+
+
+def historyShow(request):
+    global user_id
+    id = user_id
+    cursor.execute(f"Select * from history_record where user_id = '{id}'")
+    info = cursor.fetchall()
+    return render(request, "historyShow.html", {'data': info})
 
 
 # myapp/views.py

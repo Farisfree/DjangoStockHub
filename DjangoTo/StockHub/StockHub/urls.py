@@ -2,15 +2,13 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    #path('login/', views.login),
+
     path('', views.login),
     path('login/', views.login),
-    # path('search/', views.search),
     path('register/',views.register),
     path('delete/', views.delete),
-    # path('home/',views.home),
-    # path('searchlist/', views.search_list),
-
+    path('home/',views.home),
+    path('search_list/', views.search_list),
     path('stock_basic_info/', views.stock_basic_info),
     path('stock_daily_data/', views.stock_daily_data),
     path('stock_dividend_data/',views.stock_dividend_data),
@@ -22,7 +20,7 @@ urlpatterns = [
     path('stock_shares_data/', views.stock_shares_data),
 
     path('collect/', views.collect),
-    #path('historysearch/', views.historysearch),
-    #
+    path('collectInterface/', views.collectInterface),
+    path('historyShow/', views.historyShow),
 
 ]

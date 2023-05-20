@@ -6,24 +6,12 @@
 </head>
 {% load static %}
 {% include "header.html" %}
-<div>按钮测试</div>
-<body>
-
-    <form method="get" action="/collect/" >
-        <button>点击</button>
-    </form>
 <div>
 <table border="1" align="center">
   <tr>
         <th>user_id</th>
         <th>user_type</th>
-        <th>passwd</th>
-      <th>user_id</th>
-        <th>user_type</th>
-        <th>passwd</th>
-      <th>user_id</th>
-        <th>user_type</th>
-        <th>passwd</th>
+
     </tr>
     {% for row in data %}
         <tr>

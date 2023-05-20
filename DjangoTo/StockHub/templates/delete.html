@@ -7,7 +7,7 @@
 <body>
 <div style="text-align: center;">
 
-<form method="post" action="delete/">
+<form method="post" action="/delete/">
     {% csrf_token %}
     <h2>You can delete the users here</h2>
     <label>
@@ -20,7 +20,17 @@
 </form>
 <div>{{ warning1 }}</div>
 
+
+
+
 <div>
+<table border="1" align="center">
+  <tr>
+        <th>user_id</th>
+        <th>user_type</th>
+        <th>passwd</th>
+    </tr>
+
     {% for row in AllInformation %}
         <tr>
     {% for number in row %}
@@ -28,8 +38,16 @@
         {% endfor %}
         </tr>
     {% endfor %}
+
+</table>
 </div>
+
+
+
+
+
 
 </div>
 </body>
 </html>
+
