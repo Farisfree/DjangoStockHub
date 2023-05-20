@@ -8,14 +8,14 @@ import pandas as pd
 conn = Connection(
     host='localhost',
     port=3306,
-    user='stock',
-    password='123456',
+    user='root',
+    password='wu101402',
     autocommit=True
 )
 
 conn.select_db('stockhub')
 cursor = conn.cursor()
-user_type = 2  # 用来判断用户类型
+user_type = "2"  # 用来判断用户类型
 user_id = "222"
 stock_code = ""
 stock_name = ""
@@ -33,7 +33,7 @@ def login(request):
             if check:
                 info = cursor.fetchall()
 
-                tmp_type = int(info[0][0])
+                tmp_type = str(info[0][0])
                 tmp_type = str(tmp_type)
 
                 global user_id
@@ -48,6 +48,8 @@ def login(request):
         else:
             warning1 = "Please input the user_id and passwd, do not leave it empty!"
             return render(request, "login.html", {"warning1": warning1})
+
+
 
 
 def register(request):
@@ -73,6 +75,8 @@ def register(request):
 def delete(request):
     cursor.execute("Select * from people")
     data = cursor.fetchall()
+    columns = [desc[0] for desc in cursor.description]
+    df = pd.DataFrame(data, columns=columns)
 
     if request.method == "GET":
         if user_type == '2':
@@ -98,49 +102,36 @@ def delete(request):
 
 def stock_basic_info(request):
     if request.method == 'GET':
-        return render(request, "stock_basic_info.html")
+        if user_type == "1" or user_type == "2":
+            return render(request, "stock_basic_info.html")
+        else:
+            return render(request, "searchFail.html")
+
     else:
-        # 获取code和name
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
 
-        # 以code判断
         if SecuCode:
-
-            check = cursor.execute(f"select * from stock_basic_info where SecuCode = '{SecuCode}'")
-            if check:
-                global stock_code
-                stock_code = SecuCode
-                info = cursor.fetchall()
-
-                cursor.execute(
-                    f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{SecuCode}')")
+            info, code = searchTable(SecuCode,True,0)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
                 return render(request, "show.html", {'data': info})
-            else:
-                return render(request, "searchFail.html")
-        # 以名字判断
         if Lstknm:
-
-            check = cursor.execute(f"select * from stock_basic_info where  Lstknm = '{Lstknm}'")
-            if check:
-                global stock_name
-                stock_name = Lstknm
-
-                info = cursor.fetchall()
-
+            info, code= searchTable(Lstknm,1,0)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
                 return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
-            # 什么都没有输入 搜索失败
         else:
             return render(request, "searchFail.html")
 
 
 def collect(request):
     name = (stock_name or stock_code)
-    # print(name)
     cursor.execute(f"insert into collection(user_id, SecuCode) values ('{user_id}','{name}')")
-    # print(f"insert into collection(user_id, SecuCode) values ('{user_id}','{name}')")
     return HttpResponse("收藏成功")
 
 
@@ -152,286 +143,281 @@ def collectInterface(request):
 
 def stock_daily_data(request):
     if request.method == 'GET':
-        if user_type >= 1:
+        if user_type == "1" or user_type == "2":
             return render(request, "stock_daily_data.html")
         else:
-            return HttpResponse("失败")
+            return render(request, "searchFail.html")
 
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+
         if SecuCode:
-            check = cursor.execute(f"select * from stock_daily_data where SecuCode = '{SecuCode}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-                print(data)
-
-                return render(request, "show.html")
-            else:
-                return render(request, "searchFail.html")
+            info, code = searchTable(SecuCode,True,1)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
         if Lstknm:
-            check = cursor.execute(f"select stock_daily_data.* from stock_daily_data \
-                                        join (select distinct stock_basic_info.SecuCode from stock_basic_info\
-                                         where Lstknm ='{Lstknm}') as tmp using(SecuCode) \
-                                          where tmp.SecuCode = stock_daily_data.Secucode")
-
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-
-                return render(request, "show.html")
-
+            info, code= searchTable(Lstknm,False,1)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
-
         else:
             return render(request, "searchFail.html")
 
 
 def stock_dividend_data(request):
     if request.method == 'GET':
-        if user_type >= 1:
+        if user_type == "1" or user_type == "2":
             return render(request, "stock_dividend_data.html")
         else:
-            return HttpResponse("失败")
+            return render(request, "searchFail.html")
 
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+
         if SecuCode:
-            check = cursor.execute(f"select * from stock_dividend_data where SecuCode = '{SecuCode}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-                print(data)
-
-                return render(request, "show.html")
-            else:
-                return render(request, "searchFail.html")
+            info, code = searchTable(SecuCode,True,2)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
         if Lstknm:
-            check = cursor.execute(f"select * from stock_dividend_data where  Lstknm = '{Lstknm}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-
-                return render(request, "show.html")
-
+            info, code= searchTable(Lstknm,False,2)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
-
         else:
             return render(request, "searchFail.html")
 
 
 def stock_fees_data(request):
     if request.method == 'GET':
-        if user_type >= 1:
+        if user_type == "1" or user_type == "2":
             return render(request, "stock_fees_data.html")
         else:
-            return HttpResponse("失败")
+            return render(request, "searchFail.html")
 
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+
         if SecuCode:
-            check = cursor.execute(f"select * from stock_fees_data where SecuCode = '{SecuCode}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-                print(data)
-
-                return render(request, "show.html")
-            else:
-                return render(request, "searchFail.html")
+            info, code = searchTable(SecuCode,True,3)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
         if Lstknm:
-            check = cursor.execute(f"select * from stock_fees_data where  Lstknm = '{Lstknm}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-
-                return render(request, "show.html")
-
+            info, code= searchTable(Lstknm,False,3)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
-
         else:
             return render(request, "searchFail.html")
 
 
 def stock_financial_data(request):
     if request.method == 'GET':
-        if user_type >= 1:
+        if user_type == "1" or user_type == "2":
             return render(request, "stock_financial_data.html")
         else:
-            return HttpResponse("失败")
+            return render(request, "searchFail.html")
 
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+
         if SecuCode:
-            check = cursor.execute(f"select * from stock_financial_data where SecuCode = '{SecuCode}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-                print(data)
-
-                return render(request, "show.html")
-            else:
-                return render(request, "searchFail.html")
+            info, code = searchTable(SecuCode,True,4)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
         if Lstknm:
-            check = cursor.execute(f"select * from stock_financial_data where  Lstknm = '{Lstknm}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-
-                return render(request, "show.html")
-
+            info, code= searchTable(Lstknm,False,4)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
-
         else:
             return render(request, "searchFail.html")
 
 
 def stock_price_data(request):
     if request.method == 'GET':
-        if user_type >= 1:
+        if user_type == "1" or user_type == "2":
             return render(request, "stock_price_data.html")
         else:
-            return HttpResponse("失败")
+            return render(request, "searchFail.html")
 
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+
         if SecuCode:
-            check = cursor.execute(f"select * from stock_price_data where SecuCode = '{SecuCode}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-                print(data)
-
-                return render(request, "show.html")
-            else:
-                return render(request, "searchFail.html")
+            info, code = searchTable(SecuCode,True,5)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
         if Lstknm:
-            check = cursor.execute(f"select * from stock_price_data where  Lstknm = '{Lstknm}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-
-                return render(request, "show.html")
-
+            info, code= searchTable(Lstknm,False,5)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
-
         else:
             return render(request, "searchFail.html")
 
 
 def stock_ratios_data(request):
     if request.method == 'GET':
-        if user_type >= 1:
+        if user_type == "1" or user_type == "2":
             return render(request, "stock_ratios_data.html")
         else:
-            return HttpResponse("失败")
+            return render(request, "searchFail.html")
 
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+
         if SecuCode:
-            check = cursor.execute(f"select * from stock_ratios_data where SecuCode = '{SecuCode}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-                print(data)
-
-                return render(request, "show.html")
-            else:
-                return render(request, "searchFail.html")
+            info, code = searchTable(SecuCode,True,6)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
         if Lstknm:
-            check = cursor.execute(f"select * from stock_ratios_data where  Lstknm = '{Lstknm}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-
-                return render(request, "show.html")
-
+            info, code= searchTable(Lstknm,False,6)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
-
         else:
             return render(request, "searchFail.html")
 
 
 def stock_return_data(request):
     if request.method == 'GET':
-        if user_type >= 1:
+        if user_type == "1" or user_type == "2":
             return render(request, "stock_return_data.html")
         else:
-            return HttpResponse("失败")
+            return render(request, "searchFail.html")
 
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+
         if SecuCode:
-            check = cursor.execute(f"select * from stock_return_data where SecuCode = '{SecuCode}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-                print(data)
-
-                return render(request, "show.html")
-            else:
-                return render(request, "searchFail.html")
+            info, code = searchTable(SecuCode,True,7)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
         if Lstknm:
-            check = cursor.execute(f"select * from stock_return_data where  Lstknm = '{Lstknm}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-
-                return render(request, "show.html")
-
+            info, code= searchTable(Lstknm,False,7)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
-
         else:
             return render(request, "searchFail.html")
 
 
 def stock_shares_data(request):
     if request.method == 'GET':
-        if user_type >= 1:
+        if user_type == "1" or user_type == "2":
             return render(request, "stock_shares_data.html")
         else:
-            return HttpResponse("失败")
+            return render(request, "searchFail.html")
 
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+
         if SecuCode:
-            check = cursor.execute(f"select * from stock_shares_data where SecuCode = '{SecuCode}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-                print(data)
-
-                return render(request, "show.html")
-            else:
-                return render(request, "searchFail.html")
+            info, code = searchTable(SecuCode,True,8)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
         if Lstknm:
-            check = cursor.execute(f"select * from stock_shares_data where  Lstknm = '{Lstknm}'")
-            if check:
-                info = cursor.fetchall()
-                data = pd.DataFrame(info)
-
-                return render(request, "show.html")
-
+            info, code= searchTable(Lstknm,False,8)
+            if info:
+                stock_code = code
+                cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+                return render(request, "show.html", {'data': info})
             else:
                 return render(request, "searchFail.html")
-
         else:
             return render(request, "searchFail.html")
+
+
+def searchTable(context, feature, num):
+    if feature == 0:
+        table_name = nameOfTable(num)
+        check = cursor.execute(f"select * from {table_name} where SecuCode = '{context}'")
+
+        if check:
+            info = cursor.fetchall()
+            code = info[0][0]
+            return info, code
+        else:
+            return False
+
+    else:
+        table_name = nameOfTable(num)
+        check = cursor.execute(f"select {table_name}.* from {table_name} \
+                                            join (select distinct stock_basic_info.SecuCode from stock_basic_info\
+                                             where Lstknm ='{context}') as tmp using(SecuCode) \
+                                              where tmp.SecuCode = {table_name}.Secucode")
+        if check:
+            info = cursor.fetchall()
+            code = info[0][0]
+            return info, code
+        else:
+            return False
+
+
+def nameOfTable(num):
+    if num == 0:
+        return "stock_basic_info"
+    if num == 1:
+        return "stock_daily_data"
+    elif num == 2:
+        return "stock_dividend_data"
+    elif num == 3:
+        return "stock_fees_data"
+    elif num == 4:
+        return "stock_financial_data"
+    elif num == 5:
+        return "stock_price_data"
+    elif num == 6:
+        return "stock_ratios_data"
+    elif num == 7:
+        return "stock_return_data"
+    else:
+        return "stock_shares_data"
 
 
 def home(request):
