@@ -5,10 +5,9 @@ from django.shortcuts import HttpResponse
 from pymysql import Connection
 import pandas as pd
 
-
 conn = Connection(
     host='localhost',
-    port=3316,
+    port=3306,
     user='stock',
     password='123456',
     autocommit=True
@@ -16,7 +15,7 @@ conn = Connection(
 
 conn.select_db('stockhub')
 cursor = conn.cursor()
-user_type = 2 # 用来判断用户类型
+user_type = 2  # 用来判断用户类型
 user_id = "222"
 stock_code = ""
 stock_name = ""
@@ -29,23 +28,26 @@ def login(request):
     else:
         tmp_id = request.POST.get("user_id")
         password = request.POST.get("user_password")
+        if tmp_id and password:
+            check = cursor.execute(f"select user_type from people where user_id = {tmp_id} and passwd = {password}")
+            if check:
+                info = cursor.fetchall()
 
-        check = cursor.execute(f"select user_type from people where user_id = {tmp_id} and passwd = {password}")
+                tmp_type = int(info[0][0])
+                tmp_type = str(tmp_type)
 
-        if check:
-            info = cursor.fetchall()
+                global user_id
+                user_id = tmp_id
+                global user_type
+                user_type = tmp_type
 
-            tmp_type = int(info[0][0])
-            tmp_type = str(tmp_type)
-
-            global user_id
-            user_id= tmp_id
-            global user_type
-            user_type = tmp_type
-
-            return render(request, "home.html")
+                return render(request, "home.html")
+            else:
+                warning1 = "Please input the correct user_id and passwd!"
+                return render(request, "login.html", {"warning1": warning1})
         else:
-            return HttpResponse("错误")
+            warning1 = "Please input the user_id and passwd, do not leave it empty!"
+            return render(request, "login.html", {"warning1": warning1})
 
 
 # search 这一部分有一点疑问 ： 我们是一个表一个function 还是中间还有一个跳转界面来决定展示哪一部分
@@ -76,37 +78,48 @@ def register(request):
     if request.method == "GET":
         return render(request, "register.html")
     else:
-        user_id = request.POST.get("user_id")
+        userid = request.POST.get("user_id")
         user_password = request.POST.get("user_password")
-
-        check = cursor.execute(f'select * from people where user_id = {user_id}')
-        if check:
-            return HttpResponse("用户已存在")
+        if userid and user_password:
+            check = cursor.execute(f'select * from people where user_id = {userid}')
+            if check:
+                warning1 = "The user have already exist!"
+                return render(request, "register.html", {"warning1": warning1})
+            else:
+                cursor.execute(f'insert into people(user_id,user_type, passwd) values ({userid},{2},{user_password})')
+                return render(request, "login.html")
         else:
-            cursor.execute(f'insert into people(user_id, passwd) values ({user_id},{user_password})')
-            # 这里你看看是返回到登录界面还是直接跳到主界面
-            return render(request, "home.html")
+            warning1 = "Please input the suitable user_id and user_password! Do not leave it empty!"
+            return render(request, "register.html", {"warning1": warning1})
 
 
 # 注意体一下，在测试的时候 全局变量type 要设置成为字符串的形式(改int也行)
 def delete(request):
+    cursor.execute("Select * from people")
+    data = cursor.fetchall()
+    columns = [desc[0] for desc in cursor.description]
+    df = pd.DataFrame(data, columns=columns)
+
     if request.method == "GET":
         if user_type == '2':
-            return render(request, 'delete.html')
+            return render(request, 'delete.html', {"AllInformation": df})
         else:
-            return render(request, 'tmp.html')
+            return render(request, 'refuse.html')
 
     else:
-        id = request.POST.get("user_id")
+        userid = request.POST.get("user_id")
         password = request.POST.get("user_password")
-
-        check = cursor.execute(f'select * from people where user_id = {id} and passwd = {password}')
-        if check:
-            cursor.execute(f'delete from people where user_id = {id}')
-            return render(request, 'delete.html')
+        if userid and password:
+            check = cursor.execute(f'select * from people where user_id = {userid} and passwd = {password}')
+            if check:
+                cursor.execute(f'delete from people where user_id = {userid}')
+                return render(request, 'delete.html')
+            else:
+                warning1 = "Please input the correct user_id and pass_word"
+                return render(request, "delete.html", {"warning1": warning1})
         else:
-            # 加一个删除失败的跳窗在 delete的界面上
-            return HttpResponse("用户或者密码错误")
+            warning1 = "Do not leave it empty!"
+            return render(request, "delete.html", {"warning1": warning1})
 
 
 def stock_basic_info(request):
@@ -126,8 +139,9 @@ def stock_basic_info(request):
                 stock_code = SecuCode
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
-                cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{SecuCode}')")
-                return render(request,"show.html")
+                cursor.execute(
+                    f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{SecuCode}')")
+                return render(request, "show.html")
             else:
                 return render(request, "searchFail.html")
         # 以名字判断
@@ -141,7 +155,7 @@ def stock_basic_info(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
             else:
                 return render(request, "searchFail.html")
             # 什么都没有输入 搜索失败
@@ -174,7 +188,7 @@ def stock_daily_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -187,7 +201,7 @@ def stock_daily_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -213,7 +227,7 @@ def stock_dividend_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -222,7 +236,7 @@ def stock_dividend_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -248,7 +262,7 @@ def stock_fees_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -257,7 +271,7 @@ def stock_fees_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -283,7 +297,7 @@ def stock_financial_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -292,7 +306,7 @@ def stock_financial_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -318,7 +332,7 @@ def stock_price_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -327,7 +341,7 @@ def stock_price_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -353,7 +367,7 @@ def stock_ratios_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -362,7 +376,7 @@ def stock_ratios_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -388,7 +402,7 @@ def stock_return_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -397,7 +411,7 @@ def stock_return_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
 
             else:
                 return render(request, "searchFail.html")
@@ -423,7 +437,7 @@ def stock_shares_data(request):
                 data = pd.DataFrame(info)
                 print(data)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
             else:
                 return render(request, "searchFail.html")
         if Lstknm:
@@ -432,33 +446,13 @@ def stock_shares_data(request):
                 info = cursor.fetchall()
                 data = pd.DataFrame(info)
 
-                return render(request,"show.html")
+                return render(request, "show.html")
 
             else:
                 return render(request, "searchFail.html")
 
         else:
             return render(request, "searchFail.html")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def home(request):
@@ -468,8 +462,6 @@ def home(request):
 # 展示所有可以搜索的目录
 def search_list(request):
     return render(request, "search_list.html")
-
-
 
 
 def historysearch(request):
@@ -487,30 +479,15 @@ def historysearch(request):
     # 渲染模板并返回响应
     return render(request, "historysearch.html")
 
-# myapp/views.py
 
+# myapp/views.py
 
 
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 
+
 @login_required
 def profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
     return render(request, "profile.html")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
