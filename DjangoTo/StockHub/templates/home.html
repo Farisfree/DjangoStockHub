@@ -8,9 +8,12 @@
 </head>
 <body>
 {% include "header.html" %}
-    <div style="text-align: center;">
+<div style="text-align: center;">
     {% block body_block %}
-HOME
+        <h2>If you are just a normal account, you only can use a part functions in our website</h2>
+        <h3>So you'd better to upgrade to a VIP account</h3>
+        <h3>You can scan the QR code to contact with admin</h3>
+        <img src="{% static 'StockHub/img/faris.jpg' %}" alt="faris" height="700px">
     {% endblock %}
     <script src="{% static 'jquery/jquery-3.6.1.min.js' %}"></script>
     <script src="{% static 'popper/popper-1.14.4.js' %}"></script>

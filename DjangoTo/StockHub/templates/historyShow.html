@@ -1,32 +1,30 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>historyShow</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
-{% load static %}
+<body>
 {% include "header.html" %}
-<div>
-<table border="1" align="center">
-  <tr>
-        <th>user_id</th>
-        <th>user_type</th>
-
-    </tr>
-    {% for row in data %}
+<div style="text-align: center;">
+    <h2>This is your own history research</h2>
+    <table border="1" align="center">
         <tr>
-    {% for number in row %}
-        <td>{{ number }}</td>
-        {% endfor %}
+            <th>user_id</th>
+            <th>user_type</th>
+
         </tr>
-    {% endfor %}
+        {% for row in data %}
+            <tr>
+                {% for number in row %}
+                    <td>{{ number }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
 
-</table>
+    </table>
 </div>
-
-
-
-
-
 </body>
 </html>

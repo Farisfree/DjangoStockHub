@@ -1,4 +1,5 @@
 import os
+
 import chardet
 
 # 指定要检测的文件夹

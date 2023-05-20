@@ -1,9 +1,7 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.core.cache import cache
-from django.shortcuts import HttpResponse
-from pymysql import Connection
 import pandas as pd
+from django.shortcuts import HttpResponse
+from django.shortcuts import render
+from pymysql import Connection
 
 conn = Connection(
     host='localhost',
@@ -64,7 +62,7 @@ def register(request):
                 warning1 = "The user have already exist!"
                 return render(request, "register.html", {"warning1": warning1})
             else:
-                cursor.execute(f'insert into people(user_id,user_type, passwd) values ({userid},{2},{user_password})')
+                cursor.execute(f'insert into people(user_id,user_type, passwd) values ({userid},{0},{user_password})')
                 return render(request, "login.html")
         else:
             warning1 = "Please input the suitable user_id and user_password! Do not leave it empty!"
@@ -430,7 +428,11 @@ def search_list(request):
 
 
 def personalCenter(request):
-    return render(request, 'personalCenter.html')
+    global user_id
+    id = user_id
+    cursor.execute(f"select * from people where user_id = '{id}'")
+    info = cursor.fetchall()
+    return render(request, 'personalCenter.html', {'data': info})
 
 
 def historyShow(request):

@@ -5,20 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-    <div>stock_dividend_data</div>
+<div>stock_dividend_data</div>
 
-    <form method="post" action="/stock_dividend_data/">
+<form method="post" action="/stock_dividend_data/">
     {% csrf_token %}
-        <input type="text" name = "SecuCode" placeholder="code">
-        <input type="submit" value="search">
-    </form>
+    <input type="text" name="SecuCode" placeholder="code">
+    <input type="submit" value="search">
+</form>
 
-    <form method="post" action="/stock_dividend_data/">
+<form method="post" action="/stock_dividend_data/">
 
     {% csrf_token %}
-        <input type="text" name = "Lstknm" placeholder="name">
-        <input type="submit" value="search">
-    </form>
+    <input type="text" name="Lstknm" placeholder="name">
+    <input type="submit" value="search">
+</form>
 
 </body>
 </html>

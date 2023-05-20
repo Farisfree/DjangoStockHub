@@ -13,18 +13,18 @@
     </div>
 
     <form action="{% url " handleLogin" %}" method="post">
-    {% csrf_token %}
-    <div>
-        <h2>LOGIN</h2>
-        <label>
-            Account Number
-            <input type="text" name="loginAccount">
-            Password
-            <input type="text" name="loginPassword">
-        </label>
-        <input type="submit" value="login">
-        <h1>{{ warnings }}</h1>
-    </div>
+        {% csrf_token %}
+        <div>
+            <h2>LOGIN</h2>
+            <label>
+                Account Number
+                <input type="text" name="loginAccount">
+                Password
+                <input type="text" name="loginPassword">
+            </label>
+            <input type="submit" value="login">
+            <h1>{{ warnings }}</h1>
+        </div>
     </form>
     {{ warning1 }}
     {{ hint }}
