@@ -1,5 +1,3 @@
-import string
-from pymysql import Connection
 from . import views
 
 

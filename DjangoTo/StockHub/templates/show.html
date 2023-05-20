@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,35 +10,32 @@
 <div>按钮测试</div>
 <body>
 
-    <form method="get" action="/collect/" >
-        <button>点击</button>
-    </form>
+<form method="get" action="/collect/">
+    <button>点击</button>
+</form>
 <div>
-<table border="1" align="center">
-  <tr>
-        <th>user_id</th>
-        <th>user_type</th>
-        <th>passwd</th>
-      <th>user_id</th>
-        <th>user_type</th>
-        <th>passwd</th>
-      <th>user_id</th>
-        <th>user_type</th>
-        <th>passwd</th>
-    </tr>
-    {% for row in data %}
+    <table border="1" align="center">
         <tr>
-    {% for number in row %}
-        <td>{{ number }}</td>
-        {% endfor %}
+            <th>user_id</th>
+            <th>user_type</th>
+            <th>passwd</th>
+            <th>user_id</th>
+            <th>user_type</th>
+            <th>passwd</th>
+            <th>user_id</th>
+            <th>user_type</th>
+            <th>passwd</th>
         </tr>
-    {% endfor %}
+        {% for row in data %}
+            <tr>
+                {% for number in row %}
+                    <td>{{ number }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
 
-</table>
+    </table>
 </div>
-
-
-
 
 
 </body>

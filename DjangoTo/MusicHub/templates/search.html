@@ -1,17 +1,17 @@
 {% extends "home.html" %}
 {% block body_block %}
-<h2>Search</h2>
-<form action="{% url 'handle' %}" method="post">
-    {% csrf_token %}
-    <div>
-        <label>
-            Search by song
-            <input type="text" name="根据歌曲搜索">
-            Search by artist
-            <input type="text" name="根据作者搜索">
-        </label>
-        <input type="submit" value="search">
-        <h1>{{ warnings }}</h1>
-    </div>
-</form>
+    <h2>Search</h2>
+    <form action="{% url 'handle' %}" method="post">
+        {% csrf_token %}
+        <div>
+            <label>
+                Search by song
+                <input type="text" name="根据歌曲搜索">
+                Search by artist
+                <input type="text" name="根据作者搜索">
+            </label>
+            <input type="submit" value="search">
+            <h1>{{ warnings }}</h1>
+        </div>
+    </form>
 {% endblock %}

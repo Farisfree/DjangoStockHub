@@ -1,7 +1,9 @@
 import string
+
 from pymysql import Connection
-from .models import Searchresult, UsersTable
+
 from . import views
+from .models import Searchresult, UsersTable
 
 conn = Connection(
     host='localhost',

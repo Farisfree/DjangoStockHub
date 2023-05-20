@@ -1,9 +1,9 @@
 import random
-import matplotlib.pyplot as plt
+
 import pandas as pd
-import pylab as pl
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+
 from . import service
 from .models import SongData, UsersTable
 

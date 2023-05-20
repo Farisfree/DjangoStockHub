@@ -1,50 +1,47 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>User information</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
 <body>
+{% include "header.html" %}
 <div style="text-align: center;">
 
-<form method="post" action="/delete/">
-    {% csrf_token %}
-    <h2>You can delete the users here</h2>
-    <label>
-        Account number:
-        <input type="text" name="user_id" placeholder="账号">
-        Password:
-        <input type="password" name="user_password" placeholder="密码">
-    </label>
-    <input type=submit value="delete">
-</form>
-<div>{{ warning1 }}</div>
+    <form method="post" action="/delete/">
+        {% csrf_token %}
+        <h2>You can delete the users here</h2>
+        <label>
+            Account number:
+            <input type="text" name="user_id" placeholder="账号">
+            Password:
+            <input type="password" name="user_password" placeholder="密码">
+        </label>
+        <input type=submit value="delete">
+    </form>
+    <div>{{ warning1 }}</div>
 
 
+    <div>
+        <table border="1" align="center">
+            <tr>
+                <th>user_id</th>
+                <th>user_type</th>
+                <th>passwd</th>
+            </tr>
 
+            {% for row in AllInformation %}
+                <tr>
+                    {% for number in row %}
+                        <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
 
-<div>
-<table border="1" align="center">
-  <tr>
-        <th>user_id</th>
-        <th>user_type</th>
-        <th>passwd</th>
-    </tr>
-
-    {% for row in AllInformation %}
-        <tr>
-    {% for number in row %}
-        <td>{{ number }}</td>
-        {% endfor %}
-        </tr>
-    {% endfor %}
-
-</table>
-</div>
-
-
-
-
+        </table>
+    </div>
 
 
 </div>

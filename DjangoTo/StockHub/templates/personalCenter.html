@@ -1,18 +1,31 @@
-{% extends "home.html" %}
-{% block body_block %}
-<table border="1" align="center">
-    <tr>
-        <th>user_id</th>
-        <th>user_type</th>
-        <th>passwd</th>
-    </tr>
-    {% for row in personalcentertable %}
-    <tr>
-        {% for number in row %}
-        <td>{{ number }}</td>
+<!DOCTYPE html>
+{% load static %}
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <title>HomePage</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body>
+{% include "header.html" %}
+<div style="text-align: center;">
+    <table border="1" align="center">
+        <tr>
+            <th>user_id</th>
+            <th>user_type</th>
+            <th>passwd</th>
+        </tr>
+        {% for row in data %}
+            <tr>
+                {% for number in row %}
+                    <td>{{ number }}</td>
+                {% endfor %}
+            </tr>
         {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
-<button type="button"><a href="/login">EXIT!</a></button>
-{% endblock %}
+    </table>
+    <h4>Notice：0 stands for normal account, 1 stands for VIP account, 2 stands for admin account.</h4>
+    <button type="button"><a href="/login">EXIT!</a></button>
+
+</div>
+</body>
+</html>
