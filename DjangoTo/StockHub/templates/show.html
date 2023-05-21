@@ -1,16 +1,18 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
-{% load static %}
-{% include "header.html" %}
-<div>按钮测试</div>
-<body>
 
+<div>Collection Botton</div>
+<body>
+{% include "header.html" %}
+<div style="text-align: center;">
 <form method="get" action="/collect/">
-    <button>点击</button>
+    <button>Click here!</button>
 </form>
 <div>
     {% if type == 0%}
@@ -259,7 +261,7 @@
 
 
 
-
+</div>
 
 </body>
 </html>

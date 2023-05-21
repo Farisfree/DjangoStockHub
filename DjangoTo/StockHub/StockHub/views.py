@@ -11,8 +11,8 @@ from pymysql import Connection
 conn = Connection(
     host='localhost',
     port=3306,
-    user='root',
-    password='wu101402',
+    user='stock',
+    password='123456',
     autocommit=True
 )
 
@@ -131,7 +131,7 @@ def stock_basic_info(request):
 def collect(request):
     name = (stock_name or stock_code)
     cursor.execute(f"insert into collection(user_id, SecuCode) values ('{user_id}','{name}')")
-    return HttpResponse("收藏成功")
+    return render(request,'successful.html')
 
 
 def collectInterface(request):
