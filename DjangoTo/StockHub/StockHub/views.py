@@ -48,8 +48,6 @@ def login(request):
             return render(request, "login.html", {"warning1": warning1})
 
 
-
-
 def register(request):
     if request.method == "GET":
         return render(request, "register.html")
@@ -114,13 +112,13 @@ def stock_basic_info(request):
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":0})
         if Lstknm:
-            info, code= searchTable(Lstknm,1,0)
+            info, code= searchTable(Lstknm,False,0)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":0})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -155,13 +153,13 @@ def stock_daily_data(request):
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":1})
         if Lstknm:
             info, code= searchTable(Lstknm,False,1)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":1})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -184,13 +182,13 @@ def stock_dividend_data(request):
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":2})
         if Lstknm:
             info, code= searchTable(Lstknm,False,2)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":2})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -213,13 +211,13 @@ def stock_fees_data(request):
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":3})
         if Lstknm:
             info, code= searchTable(Lstknm,False,3)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":3})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -242,13 +240,13 @@ def stock_financial_data(request):
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":4})
         if Lstknm:
             info, code= searchTable(Lstknm,False,4)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":4})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -271,13 +269,13 @@ def stock_price_data(request):
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":5})
         if Lstknm:
             info, code= searchTable(Lstknm,False,5)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":5})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -300,13 +298,13 @@ def stock_ratios_data(request):
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":6})
         if Lstknm:
             info, code= searchTable(Lstknm,False,6)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":6})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -329,13 +327,13 @@ def stock_return_data(request):
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":7})
         if Lstknm:
             info, code= searchTable(Lstknm,False,7)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":7})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -358,13 +356,13 @@ def stock_shares_data(request):
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":8})
         if Lstknm:
             info, code= searchTable(Lstknm,False,8)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info})
+                return render(request, "show.html", {'data': info,"type":8})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -372,16 +370,15 @@ def stock_shares_data(request):
 
 
 def searchTable(context, feature, num):
-    if feature == 0:
+    if feature:
         table_name = nameOfTable(num)
         check = cursor.execute(f"select * from {table_name} where SecuCode = '{context}'")
-
         if check:
             info = cursor.fetchall()
             code = info[0][0]
             return info, code
         else:
-            return False
+            return None
 
     else:
         table_name = nameOfTable(num)
@@ -394,7 +391,7 @@ def searchTable(context, feature, num):
             code = info[0][0]
             return info, code
         else:
-            return False
+            return None
 
 
 def nameOfTable(num):

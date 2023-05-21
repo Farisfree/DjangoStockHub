@@ -13,27 +13,245 @@
     <button>点击</button>
 </form>
 <div>
-    <table border="1" align="center">
-        <tr>
-            <th>user_id</th>
-            <th>user_type</th>
-            <th>passwd</th>
-            <th>user_id</th>
-            <th>user_type</th>
-            <th>passwd</th>
-            <th>user_id</th>
-            <th>user_type</th>
-            <th>passwd</th>
-        </tr>
-        {% for row in data %}
-            <tr>
-                {% for number in row %}
-                    <td>{{ number }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
+    {% if type == 0%}
 
-</table>
+        <table border="1" align="center">
+            <tr>
+                <th>SecuCode</th>
+                <th>ComCode</th>
+                <th>Comcd</th>
+                <th>Stkcd</th>
+                <th>Lstknm</th>
+                <th>Stkcdotrd</th>
+                <th>Listedstate</th>
+                <th>Csrciccd1</th>
+                <th>Csrciccd2</th>
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for number in row %}
+                        <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    {% endif %}
+
+            </table>
+
+    {% if type == 1%}
+
+            <table border="1" align="center">
+                <tr>
+                <th>SecuCode</th>
+                <th>ComCode</th>
+                <th>Comcd</th>
+                <th>Stkcd</th>
+                <th>Lstknm</th>
+                <th>Stkcdotrd</th>
+                <th>Listedstate</th>
+                <th>Csrciccd1</th>
+                <th>Csrciccd2</th>
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for number in row %}
+                        <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    {% endif %}
+
+            </table>
+
+    {% if type == 2%}
+
+            <table border="1" align="center">
+                <tr>
+                <th>SecuCode</th>
+                <th>Exdt</th>
+                <th>Dividend</th>
+                <th>Stksprate</th>
+                <th>Shrcmprsrate</th>
+                <th>Stkdrate</th>
+                <th>Capissurate</th>
+                <th>Snipr</th>
+                <th>Snivol</th>
+                <th>Rigoffrate</th>
+                <th>Rigoffpr</th>
+                <th>Arigoffshr</th>
+                <th>Snivol</th>
+                <th>Rigoffrate</th>
+
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for number in row %}
+                        <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    {% endif %}
+
+            </table>
+
+
+    {% if type == 3%}
+
+            <table border="1" align="center">
+                <tr>
+                <th>SecuCode</th>
+                <th>Coma</th>
+                <th>Comb</th>
+                <th>Stamptaxa</th>
+                <th>Stamptaxb</th>
+
+
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for number in row %}
+                        <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    {% endif %}
+
+            </table>
+
+
+    {% if type == 4%}
+
+            <table border="1" align="center">
+                <tr>
+                <th>SecuCode</th>
+                <th>Infopubdt</th>
+                <th>Enddt</th>
+                <th>Reporttype</th>
+                <th>EPS</th>
+                <th>ROE</th>
+                <th>AccumFundPS</th>
+                <th>OpPrfPS</th>
+                <th>NAPS</th>
+                <th>NAPSadj</th>
+                <th>IncomePS</th>
+                <th>NCFfropePS</th>
+
+
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for number in row %}
+                        <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    {% endif %}
+
+            </table>
+
+
+    {% if type == 5%}
+
+            <table border="1" align="center">
+                <tr>
+                <th>SecuCode</th>
+                <th>Pcash</th>
+                <th>Pshrrate</th>
+                <th>Pshrrate_C</th>
+                <th>Pshrrate_S</th>
+                <th>Pcapissurate</th>
+                <th>Mcfacpr</th>
+                <th>Qttncurrency</th>
+                <th>Ex</th>
+
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for number in row %}
+                        <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    {% endif %}
+
+            </table>
+
+
+    {% if type == 6%}
+
+            <table border="1" align="center">
+                <tr>
+                <th>SecuCode</th>
+                <th>PE</th>
+                <th>PB</th>
+                <th>PCF</th>
+                <th>PS</th>
+                <th>Date_</th>
+
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for number in row %}
+                        <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    {% endif %}
+
+            </table>
+
+{% if type == 7%}
+
+            <table border="1" align="center">
+                <tr>
+                <th>SecuCode</th>
+                <th>Date_</th>
+                <th>Dret</th>
+                <th>Daret</th>
+                <th>Dreteq</th>
+                <th>Drettmv</th>
+                <th>Dretmc</th>
+                <th>DRfRet</th>
+
+
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for number in row %}
+                        <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    {% endif %}
+
+            </table>
+
+{% if type == 8%}
+
+            <table border="1" align="center">
+                <tr>
+                <th>SecuCode</th>
+                <th>Capchgdt</th>
+                <th>Comstateshr</th>
+                <th>Comlpshr</th>
+                <th>Fullshr</th>
+                <th>Trdshr</th>
+                <th>Lsttrdshr</th>
+
+
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for number in row %}
+                        <td>{{ number }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    {% endif %}
+
+            </table>
+
+
 </div>
 
 
