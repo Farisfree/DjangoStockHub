@@ -1,13 +1,12 @@
+import base64
+import io
+
+# 下面这些库是为了data analysis的绘图包
+import matplotlib.pyplot as plt
 import pandas as pd
-from django.shortcuts import HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render
 from pymysql import Connection
-#下面这些库是为了data analysis的绘图包
-import matplotlib.pyplot as plt
-from django.shortcuts import render
-from django.http import HttpResponse
-import io
-import base64
 
 conn = Connection(
     host='localhost',
@@ -114,17 +113,17 @@ def stock_basic_info(request):
         Lstknm = request.POST.get('Lstknm')
 
         if SecuCode:
-            info, code = searchTable(SecuCode,True,0)
+            info, code = searchTable(SecuCode, True, 0)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":0})
+                return render(request, "show.html", {'data': info, "type": 0})
         if Lstknm:
-            info, code= searchTable(Lstknm,False,0)
+            info, code = searchTable(Lstknm, False, 0)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":0})
+                return render(request, "show.html", {'data': info, "type": 0})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -146,7 +145,8 @@ def collectInterface(request):
         return render(request, "collectInterface.html", {'data': info})
     else:
         warning = 'There is no result'
-        return render(request,"collectInterface.html",{'warning':warning})
+        return render(request, "collectInterface.html", {'warning': warning})
+
 
 def stock_daily_data(request):
     if request.method == 'GET':
@@ -160,17 +160,17 @@ def stock_daily_data(request):
         Lstknm = request.POST.get('Lstknm')
 
         if SecuCode:
-            info, code = searchTable(SecuCode,True,1)
+            info, code = searchTable(SecuCode, True, 1)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":1})
+                return render(request, "show.html", {'data': info, "type": 1})
         if Lstknm:
-            info, code= searchTable(Lstknm,False,1)
+            info, code = searchTable(Lstknm, False, 1)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":1})
+                return render(request, "show.html", {'data': info, "type": 1})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -189,17 +189,17 @@ def stock_dividend_data(request):
         Lstknm = request.POST.get('Lstknm')
 
         if SecuCode:
-            info, code = searchTable(SecuCode,True,2)
+            info, code = searchTable(SecuCode, True, 2)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":2})
+                return render(request, "show.html", {'data': info, "type": 2})
         if Lstknm:
-            info, code= searchTable(Lstknm,False,2)
+            info, code = searchTable(Lstknm, False, 2)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":2})
+                return render(request, "show.html", {'data': info, "type": 2})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -218,17 +218,17 @@ def stock_fees_data(request):
         Lstknm = request.POST.get('Lstknm')
 
         if SecuCode:
-            info, code = searchTable(SecuCode,True,3)
+            info, code = searchTable(SecuCode, True, 3)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":3})
+                return render(request, "show.html", {'data': info, "type": 3})
         if Lstknm:
-            info, code= searchTable(Lstknm,False,3)
+            info, code = searchTable(Lstknm, False, 3)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":3})
+                return render(request, "show.html", {'data': info, "type": 3})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -247,17 +247,17 @@ def stock_financial_data(request):
         Lstknm = request.POST.get('Lstknm')
 
         if SecuCode:
-            info, code = searchTable(SecuCode,True,4)
+            info, code = searchTable(SecuCode, True, 4)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":4})
+                return render(request, "show.html", {'data': info, "type": 4})
         if Lstknm:
-            info, code= searchTable(Lstknm,False,4)
+            info, code = searchTable(Lstknm, False, 4)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":4})
+                return render(request, "show.html", {'data': info, "type": 4})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -276,17 +276,17 @@ def stock_price_data(request):
         Lstknm = request.POST.get('Lstknm')
 
         if SecuCode:
-            info, code = searchTable(SecuCode,True,5)
+            info, code = searchTable(SecuCode, True, 5)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":5})
+                return render(request, "show.html", {'data': info, "type": 5})
         if Lstknm:
-            info, code= searchTable(Lstknm,False,5)
+            info, code = searchTable(Lstknm, False, 5)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":5})
+                return render(request, "show.html", {'data': info, "type": 5})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -305,17 +305,17 @@ def stock_ratios_data(request):
         Lstknm = request.POST.get('Lstknm')
 
         if SecuCode:
-            info, code = searchTable(SecuCode,True,6)
+            info, code = searchTable(SecuCode, True, 6)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":6})
+                return render(request, "show.html", {'data': info, "type": 6})
         if Lstknm:
-            info, code= searchTable(Lstknm,False,6)
+            info, code = searchTable(Lstknm, False, 6)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":6})
+                return render(request, "show.html", {'data': info, "type": 6})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -334,17 +334,17 @@ def stock_return_data(request):
         Lstknm = request.POST.get('Lstknm')
 
         if SecuCode:
-            info, code = searchTable(SecuCode,True,7)
+            info, code = searchTable(SecuCode, True, 7)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":7})
+                return render(request, "show.html", {'data': info, "type": 7})
         if Lstknm:
-            info, code= searchTable(Lstknm,False,7)
+            info, code = searchTable(Lstknm, False, 7)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":7})
+                return render(request, "show.html", {'data': info, "type": 7})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -363,17 +363,17 @@ def stock_shares_data(request):
         Lstknm = request.POST.get('Lstknm')
 
         if SecuCode:
-            info, code = searchTable(SecuCode,True,8)
+            info, code = searchTable(SecuCode, True, 8)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":8})
+                return render(request, "show.html", {'data': info, "type": 8})
         if Lstknm:
-            info, code= searchTable(Lstknm,False,8)
+            info, code = searchTable(Lstknm, False, 8)
             if info:
                 stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
-                return render(request, "show.html", {'data': info,"type":8})
+                return render(request, "show.html", {'data': info, "type": 8})
             else:
                 return render(request, "searchFail.html")
         else:
@@ -462,17 +462,64 @@ from .models import UserProfile
 def profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
     return render(request, "profile.html")
+#
+# import io
+# import base64
+# import matplotlib.pyplot as plt
+#
+# def generate_scatter_plot(x, y):
+#     # 绘制散点图
+#     plt.scatter(x, y)
+#     plt.xlabel('date')
+#     plt.ylabel('price')
+#
+#     # 将图形转换为字节流
+#     buffer = io.BytesIO()
+#     plt.savefig(buffer, format='png')
+#     buffer.seek(0)
+#
+#     # 将图形转换为Base64编码字符串
+#     image_base64 = base64.b64encode(buffer.getvalue()).decode()
+#
+#     # 清空图形
+#     plt.clf()
+#     plt.close()
+#
+#     return image_base64
+#
+# def analysis(request):
+#     if request.method == 'GET':
+#         return render(request, "analysis.html")
+#     else:
+#         stock_code = request.POST.get('stock_code')
+#         if stock_code:
+#             cursor.execute(f"SELECT Date_, Oppr FROM stock_daily_data WHERE SecuCode = '{stock_code}'")
+#             data = cursor.fetchall()
+#             if data:
+#                 dates = [int(date.strftime("%Y%m%d")) for date, _ in data]
+#                 values = [value for _, value in data]
+#                 image_base64 = generate_scatter_plot(dates, values)
+#                 return render(request, 'analysis.html', {'image_base64': image_base64})
+#             else:
+#                 warning = 'Please input the correct stock code.'
+#                 return render(request, 'analysis.html', {'warning': warning})
+#         else:
+#             warning = 'Do not leave the stock code empty!'
+#             return render(request, 'analysis.html', {'warning': warning})
+import io
+import base64
+import matplotlib.pyplot as plt
 
-
-def generate_line_chart(x , y):
-    # 准备数据
-    x = [1, 2, 3, 4, 5]
-    y = [3, 6, 2, 7, 4]
-
+def generate_line_scatter_chart(x, y):
     # 绘制折线图
-    plt.plot(x, y)
-    plt.xlabel('X轴标签')
-    plt.ylabel('Y轴标签')
+    plt.plot(x, y, marker='o', linestyle='-', label='Line')
+
+    # 绘制散点图
+    plt.scatter(x, y, marker='o', color='red', label='Scatter')
+
+    plt.xlabel('date')
+    plt.ylabel('price')
+    plt.legend()
 
     # 将图形转换为字节流
     buffer = io.BytesIO()
@@ -482,29 +529,28 @@ def generate_line_chart(x , y):
     # 将图形转换为Base64编码字符串
     image_base64 = base64.b64encode(buffer.getvalue()).decode()
 
+    # 清空图形
+    plt.clf()
+    plt.close()
+
     return image_base64
 
 def analysis(request):
-    # 生成折线图
     if request.method == 'GET':
         return render(request, "analysis.html")
     else:
         stock_code = request.POST.get('stock_code')
         if stock_code:
-            cursor.execute(f"Select Date_,Oppr from stock_daily_data where SecuCode = '{stock_code}'")
+            cursor.execute(f"SELECT Date_, Oppr FROM stock_daily_data WHERE SecuCode = '{stock_code}'")
             data = cursor.fetchall()
             if data:
-                image_base64 = generate_line_chart(data['Oppr'],data['Data_'])
+                dates = [int(date.strftime("%Y%m%d")) for date, _ in data]
+                values = [value for _, value in data]
+                image_base64 = generate_line_scatter_chart(dates, values)
+                return render(request, 'analysis.html', {'image_base64': image_base64})
             else:
-                warning1='please input the correct stock_code'
-                return render(request,'analysis.html',{'warning':warning1})
+                warning = 'Please input the correct stock code.'
+                return render(request, 'analysis.html', {'warning': warning})
         else:
-            warning1 = 'do not leave the stock_code empty!'
-            return render(request,'analysis.html',{'warning':warning1})
-
-
-
-
-    # 将图形传递到前端网页
-    context = {'image_base64': image_base64}
-    return render(request, 'analysis.html', context)
+            warning = 'Do not leave the stock code empty!'
+            return render(request, 'analysis.html', {'warning': warning})
