@@ -11,8 +11,8 @@ from pymysql import Connection
 conn = Connection(
     host='localhost',
     port=3306,
-    user='stock',
-    password='123456',
+    user='root',
+    password='wu101402',
     autocommit=True
 )
 
@@ -110,17 +110,22 @@ def stock_basic_info(request):
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
 
+        global stock_code
         if SecuCode:
             info, code = searchTable(SecuCode, True, 0)
             if info:
-                stock_code = code
+
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
+
                 return render(request, "show.html", {'data': info, "type": 0})
         if Lstknm:
             info, code = searchTable(Lstknm, False, 0)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 0})
             else:
                 return render(request, "searchFail.html")
@@ -129,8 +134,7 @@ def stock_basic_info(request):
 
 
 def collect(request):
-    name = (stock_name or stock_code)
-    cursor.execute(f"insert into collection(user_id, SecuCode) values ('{user_id}','{name}')")
+    cursor.execute(f"replace into collection(user_id, SecuCode) values ('{user_id}','{stock_code}')")
     return render(request,'successful.html')
 
 
@@ -157,17 +161,23 @@ def stock_daily_data(request):
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
 
+        global stock_code
+
         if SecuCode:
             info, code = searchTable(SecuCode, True, 1)
             if info:
-                stock_code = code
+
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 1})
         if Lstknm:
             info, code = searchTable(Lstknm, False, 1)
             if info:
-                stock_code = code
+
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 1})
             else:
                 return render(request, "searchFail.html")
@@ -186,17 +196,19 @@ def stock_dividend_data(request):
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
 
+        global stock_code
         if SecuCode:
             info, code = searchTable(SecuCode, True, 2)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 2})
         if Lstknm:
             info, code = searchTable(Lstknm, False, 2)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 2})
             else:
                 return render(request, "searchFail.html")
@@ -214,18 +226,21 @@ def stock_fees_data(request):
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+        global stock_code
 
         if SecuCode:
             info, code = searchTable(SecuCode, True, 3)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 3})
         if Lstknm:
             info, code = searchTable(Lstknm, False, 3)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 3})
             else:
                 return render(request, "searchFail.html")
@@ -243,18 +258,20 @@ def stock_financial_data(request):
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
-
+        global stock_code
         if SecuCode:
             info, code = searchTable(SecuCode, True, 4)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 4})
         if Lstknm:
             info, code = searchTable(Lstknm, False, 4)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 4})
             else:
                 return render(request, "searchFail.html")
@@ -272,18 +289,21 @@ def stock_price_data(request):
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+        global stock_code
 
         if SecuCode:
             info, code = searchTable(SecuCode, True, 5)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 5})
         if Lstknm:
             info, code = searchTable(Lstknm, False, 5)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 5})
             else:
                 return render(request, "searchFail.html")
@@ -301,18 +321,20 @@ def stock_ratios_data(request):
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
-
+        global stock_code
         if SecuCode:
             info, code = searchTable(SecuCode, True, 6)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 6})
         if Lstknm:
             info, code = searchTable(Lstknm, False, 6)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 6})
             else:
                 return render(request, "searchFail.html")
@@ -330,18 +352,20 @@ def stock_return_data(request):
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
-
+        global stock_code
         if SecuCode:
             info, code = searchTable(SecuCode, True, 7)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 7})
         if Lstknm:
             info, code = searchTable(Lstknm, False, 7)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 7})
             else:
                 return render(request, "searchFail.html")
@@ -359,18 +383,21 @@ def stock_shares_data(request):
     else:
         SecuCode = request.POST.get('SecuCode')
         Lstknm = request.POST.get('Lstknm')
+        global stock_code
 
         if SecuCode:
             info, code = searchTable(SecuCode, True, 8)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record(user_id, record_SecuCode) values ('{user_id}','{code}')")
+                global stock_code
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 8})
         if Lstknm:
             info, code = searchTable(Lstknm, False, 8)
             if info:
-                stock_code = code
                 cursor.execute(f"replace into history_record (user_id, record_SecuCode) values ('{user_id}','{code}')")
+
+                stock_code = code
                 return render(request, "show.html", {'data': info, "type": 8})
             else:
                 return render(request, "searchFail.html")
