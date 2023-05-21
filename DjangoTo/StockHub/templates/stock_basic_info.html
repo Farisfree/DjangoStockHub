@@ -1,10 +1,15 @@
+
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
 <body>
+{% include "header.html" %}
+<div style="text-align: center;">
 <div>Stock_basic_inf0</div>
 
 <form method="post" action="/stock_basic_info/">
@@ -19,6 +24,6 @@
     <input type="text" name="Lstknm" placeholder="name">
     <input type="submit" value="search">
 </form>
-
+</div>
 </body>
 </html>
