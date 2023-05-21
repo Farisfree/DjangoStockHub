@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <title>HomePage</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body>
+
+{% include "header.html" %}
+<div style="text-align: center;">
+
+    <form method="post" action="/analysis/">
+    {% csrf_token %}
+    <input type="text" name="stock_code" placeholder="code">
+    <input type="submit" value="search">
+</form>
+
+    <h2>This is our picture</h2>
+   <img src="data:image/png;base64,{{ image_base64 }}" alt="折线图">
+</div>
+{{ warning }}
+</body>
+</html>
