@@ -24,5 +24,6 @@ urlpatterns = [
     path('collectInterface/', views.collectInterface),
     path('historyShow/', views.historyShow),
     path('personalCenter/', views.personalCenter),
+    path('analysis/', views.analysis),
 
 ]

@@ -2,12 +2,18 @@ import pandas as pd
 from django.shortcuts import HttpResponse
 from django.shortcuts import render
 from pymysql import Connection
+#下面这些库是为了data analysis的绘图包
+import matplotlib.pyplot as plt
+from django.shortcuts import render
+from django.http import HttpResponse
+import io
+import base64
 
 conn = Connection(
     host='localhost',
     port=3306,
-    user='root',
-    password='wu101402',
+    user='stock',
+    password='123456',
     autocommit=True
 )
 
@@ -132,10 +138,15 @@ def collect(request):
 
 
 def collectInterface(request):
-    cursor.execute("Select * from collection")
+    global user_id
+    id = user_id
+    cursor.execute(f"Select * from collection where user_id = '{id}'")
     info = cursor.fetchall()
-    return render(request, "collectInterface.html", {'data': info})
-
+    if info:
+        return render(request, "collectInterface.html", {'data': info})
+    else:
+        warning = 'There is no result'
+        return render(request,"collectInterface.html",{'warning':warning})
 
 def stock_daily_data(request):
     if request.method == 'GET':
@@ -451,3 +462,49 @@ from .models import UserProfile
 def profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
     return render(request, "profile.html")
+
+
+def generate_line_chart(x , y):
+    # 准备数据
+    x = [1, 2, 3, 4, 5]
+    y = [3, 6, 2, 7, 4]
+
+    # 绘制折线图
+    plt.plot(x, y)
+    plt.xlabel('X轴标签')
+    plt.ylabel('Y轴标签')
+
+    # 将图形转换为字节流
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+
+    # 将图形转换为Base64编码字符串
+    image_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+    return image_base64
+
+def analysis(request):
+    # 生成折线图
+    if request.method == 'GET':
+        return render(request, "analysis.html")
+    else:
+        stock_code = request.POST.get('stock_code')
+        if stock_code:
+            cursor.execute(f"Select Date_,Oppr from stock_daily_data where SecuCode = '{stock_code}'")
+            data = cursor.fetchall()
+            if data:
+                image_base64 = generate_line_chart(data['Oppr'],data['Data_'])
+            else:
+                warning1='please input the correct stock_code'
+                return render(request,'analysis.html',{'warning':warning1})
+        else:
+            warning1 = 'do not leave the stock_code empty!'
+            return render(request,'analysis.html',{'warning':warning1})
+
+
+
+
+    # 将图形传递到前端网页
+    context = {'image_base64': image_base64}
+    return render(request, 'analysis.html', context)

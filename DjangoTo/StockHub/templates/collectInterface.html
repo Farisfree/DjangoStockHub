@@ -1,17 +1,19 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
-{% load static %}
+<body>
 {% include "header.html" %}
-<div>
+<div style="text-align: center;">
+<h2>Here is your collection</h2>
     <table border="1" align="center">
         <tr>
-            <th>user_id</th>
-            <th>user_type</th>
-
+            <th>User_id</th>
+            <th>StockCode or StockName</th>
         </tr>
         {% for row in data %}
             <tr>
@@ -22,8 +24,7 @@
         {% endfor %}
 
     </table>
+<h2>{{ warning }}</h2>
 </div>
-
-
 </body>
 </html>
