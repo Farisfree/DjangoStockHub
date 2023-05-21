@@ -12,8 +12,8 @@ import base64
 conn = Connection(
     host='localhost',
     port=3306,
-    user='stock',
-    password='123456',
+    user='root',
+    password='wu101402',
     autocommit=True
 )
 
@@ -104,10 +104,8 @@ def delete(request):
 
 def stock_basic_info(request):
     if request.method == 'GET':
-        if user_type == "1" or user_type == "2":
-            return render(request, "stock_basic_info.html")
-        else:
-            return render(request, "searchFail.html")
+
+        return render(request, "stock_basic_info.html")
 
     else:
         SecuCode = request.POST.get('SecuCode')
